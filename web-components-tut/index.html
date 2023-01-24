@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer type="module" src="KeechItem.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            background: rgb(57, 57, 57);
+            color: white
+        }
+        h2 {
+            color: yellow
+        }
+        ::part(topper){
+            color: teal;
+        }
+         .spotlight {
+         background: orangered
+ }
+    </style>
+</head>
+<body>
+    <h3>greetings</h3>
+    <h2>GREETINGS</h2>
+  <keech-item doggocharacter="keech" doggosize="2">
+    <!-- slot attr value has to match the name attr value 
+         of the slot element in the corresponding template;  -->
+    <h2 slot="title">Doggos</h2>
+    <ul slot="names">
+        <li>Keech</li>
+        <li>Poozh</li>
+        <li>Ceecee</li>
+    </ul>
+  </keech-item>
+<!-- inside the custom tag is the fallback content -->
+
+<script>
+    let customItem = document.querySelector('keech-item')
+    setTimeout(() => {
+        if(customItem.getAttribute('doggocharacter') === "keech"){
+            customItem.setAttribute('doggocharacter', "poozh")
+        } else {
+            customItem.setAttribute('doggocharacter', "keech")
+        }
+        if (customItem.getAttribute('doggosize') === "big") {
+            customItem.setAttribute('doggosize', "small")
+        } else {
+            customItem.setAttribute('doggosize', "big")
+        }
+    },2000)
+    
+</script>
+</body>
+</html> 
