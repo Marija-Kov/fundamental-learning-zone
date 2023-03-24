@@ -80,20 +80,118 @@ class LinkedList {
              currentNode = currentNode.next
         }
         console.log(`node ${value} not found`)
-        return
+        return 
     }
-
+    addMany(valuesArr){
+      for (let i = 0; i < valuesArr.length; ++i) {
+        list.append(valuesArr[i]);
+      }
+    }
 }
 
 let list = new LinkedList()
-list.append("A")
-list.append("B")
-list.prepend("C");
-list.prepend("D")
-list.search("A")
-list.search("E")
+list.addMany(["A", "B", "C", "D"])
+//console.log(list.head, list.head.next)
 
-console.log(list)
+let a = new Node("A");
+let b = new Node("B");
+let c = new Node("C");
+let d = new Node("D");
+
+a.next=b
+b.next=c
+c.next=d
+
+// Traversing a linked list with a loop:
+
+function printLinkedList(head){
+  const nodeArr = [head.value];
+  let curr = head.next;
+  while(curr){
+    nodeArr.push(curr.value)
+    curr = curr.next;
+  }
+  return nodeArr
+}
+
+//console.log(printLinkedList(a))
+
+// ** Note about recursion: every time a function is called, it's added to the call stack, which adds space complexity - O(n)
+
+// Traversing a linked list recursively returning values one by one:
+
+function printLinkedList0(head){
+  if(head){
+    console.log(head.value)
+    return printLinkedList0(head.next)
+  }
+  return "done"
+}
+
+//console.log(printLinkedList0(a));
+
+// Traversing the linked list recursively returning values as an array:
+
+ function addNodeHelper(node, arr){ 
+  if(node){
+    arr.push(node.value);
+    addNodeHelper(node.next, arr);
+  }
+ }
+
+function printLinkedList1(head) {
+  let nodeArr = [];
+  addNodeHelper(head, nodeArr);
+  return nodeArr;
+}
+
+//console.log(printLinkedList1(a))
+
+
+// TASK: Calculating the sum of values of nodes in a linked list
+// If you know how to traverse a linked list, you're in a good shape
+
+const aa = new Node(3)
+const bb = new Node(6);
+const cc = new Node(7);
+
+aa.next = bb;
+bb.next = cc;
+
+function getSum(head){
+  if(!(head instanceof Node)){
+    return "invalid input"
+  }
+  let sum = head.value;
+  let curr = head.next;
+  while(curr){
+    sum+=curr.value;
+    curr = curr.next;
+  }
+ return sum
+}
+
+// console.log(getSum(aa))
+
+// Recursively: 
+
+function getSum0(head) {
+  if(!head) return null
+  let sum = 0;
+  return sumHelper(head, sum);
+}
+
+function sumHelper(node, sum) {
+  if (node) {
+    sum += node.value;
+    return sumHelper(node.next, sum);
+  }
+  return sum
+}
+
+// console.log(getSum0(aa))
+
+
 
 
 
