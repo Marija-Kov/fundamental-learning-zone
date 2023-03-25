@@ -15,11 +15,12 @@ class Node {
 
 class LinkedList {
     constructor(){
-        this.head = this.tail = null
+        this.head = this.tail = null; 
+
     }
     append(value){
      if(!this.tail) {
-         this.head = this.tail = new Node(value)
+         this.head = this.tail = new Node(value) // ** this will cause every first node added to the list to appear twice in the list..
      }
      let oldTail = this.tail;
      this.tail = new Node(value);
@@ -84,7 +85,7 @@ class LinkedList {
     }
     addMany(valuesArr){
       for (let i = 0; i < valuesArr.length; ++i) {
-        list.append(valuesArr[i]);
+        this.append(valuesArr[i]);
       }
     }
 }
@@ -190,6 +191,97 @@ function sumHelper(node, sum) {
 }
 
 // console.log(getSum0(aa))
+
+
+// Find a value in a linked list
+
+let newList = new LinkedList();
+newList.addMany(["P", "O", "O", "Z", "H"]);
+//console.log(newList)
+
+function find(list, val){
+ let curr = list.head;
+ let pos = 0;
+ while(curr){
+  if(curr.value===val) return `${val} found at position ${pos}`;
+  curr = curr.next;
+  ++pos;
+ }
+ return `value ${val} not found`
+}
+
+//console.log(find(newList, "u"))
+
+// Reversing a singly linked list
+
+const A = new Node("A")
+const B = new Node("B");
+const C = new Node("C");
+const D = new Node("D");
+
+A.next = B
+B.next = C
+C.next = D
+D.next = null
+
+// Reversing a singly linked list if the list is stored in an array so that head is at the position 0 and tail is in the last position in the array
+
+const myList = [A,B,C,D]
+
+function reverseList(list){
+  for(let i = 0; i<list.length; ++i){
+    list[i].next = null;
+    list[i].prev = list[i-1] || null
+  }
+  return list
+}
+//console.log(reverseList(myList))
+
+// Reversing a singly linked list if the nodes are wrapped inside an object (or an array where we don't know the order of the nodes)
+
+const myListObj = { C:C, B:B, A:A, D:D }
+
+
+ function findTail(list) {
+   for (let currNode in list){
+     if (list[currNode].next === null){
+      return list[currNode]  
+   }
+  }
+ }
+ //console.log(findTail(myListObj))
+
+ function findHead(list){
+  let head;
+  for (let currNode in list) {
+    for (let anyNode in list) {
+      if (list[anyNode].next === list[currNode]) break;
+      head = list[currNode];
+    }
+  }
+  return head;
+ }
+
+ // Reverse list iteratively finding head first
+
+ function reverseListHeadFirst(list){
+  let prev = null;
+  let curr = findHead(list);
+  let next = curr.next;
+  while(curr){
+    next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next; // the order of these reassignments is crucial
+  }
+ return list
+ }
+
+ //console.log(reverseListHeadFirst(myListObj))
+
+
+
+
 
 
 
