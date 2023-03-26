@@ -103,7 +103,9 @@ a.next=b
 b.next=c
 c.next=d
 
-// Traversing a linked list with a loop:
+//_________________________________________________________
+// Traversing a linked list iteratively:
+//_________________________________________________________
 
 function printLinkedList(head){
   const nodeArr = [head.value];
@@ -119,7 +121,9 @@ function printLinkedList(head){
 
 // ** Note about recursion: every time a function is called, it's added to the call stack, which adds space complexity - O(n)
 
+//_________________________________________________________
 // Traversing a linked list recursively returning values one by one:
+//_________________________________________________________
 
 function printLinkedList0(head){
   if(head){
@@ -131,7 +135,9 @@ function printLinkedList0(head){
 
 //console.log(printLinkedList0(a));
 
+//_________________________________________________________
 // Traversing the linked list recursively returning values as an array:
+//_________________________________________________________
 
  function addNodeHelper(node, arr){ 
   if(node){
@@ -148,9 +154,9 @@ function printLinkedList1(head) {
 
 //console.log(printLinkedList1(a))
 
-
-// TASK: Calculating the sum of values of nodes in a linked list
-// If you know how to traverse a linked list, you're in a good shape
+//_________________________________________________________
+//////Calculating the sum of values of nodes in a linked list
+//_________________________________________________________
 
 const aa = new Node(3)
 const bb = new Node(6);
@@ -192,8 +198,9 @@ function sumHelper(node, sum) {
 
 // console.log(getSum0(aa))
 
-
-// Find a value in a linked list
+//_________________________________________________________
+///////// Find a value in a linked list
+//_________________________________________________________
 
 let newList = new LinkedList();
 newList.addMany(["P", "O", "O", "Z", "H"]);
@@ -212,35 +219,47 @@ function find(list, val){
 
 //console.log(find(newList, "u"))
 
-// Reversing a singly linked list
+
+//_________________________________________________________
+//////// Reversing a singly linked list
+//_________________________________________________________
 
 const A = new Node("A")
 const B = new Node("B");
 const C = new Node("C");
 const D = new Node("D");
-
 A.next = B
 B.next = C
 C.next = D
-D.next = null
 
-// Reversing a singly linked list if the list is stored in an array so that head is at the position 0 and tail is in the last position in the array
-
-const myList = [A,B,C,D]
-
-function reverseList(list){
-  for(let i = 0; i<list.length; ++i){
-    list[i].next = null;
-    list[i].prev = list[i-1] || null
+ function reverseSinglyLinkedList(head){
+  let prev = null;
+  let next = head.next;
+  while(curr){
+    next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next; // the order of these reassignments is crucial
   }
-  return list
-}
-//console.log(reverseList(myList))
+ return 
+ }
 
-// Reversing a singly linked list if the nodes are wrapped inside an object (or an array where we don't know the order of the nodes)
+ //console.log(reverseSinglyLinkedList(A))
 
-const myListObj = { C:C, B:B, A:A, D:D }
+ function reverseSinglyLinkedListRecursively(curr, prev = null) {
+   let next = curr.next;
+   curr.next = prev;
+   prev = curr;
+   console.log(curr);
+   if (next) reverseSinglyLinkedListRecursively(next, prev);
+   return;
+ }
+  //console.log(reverseSinglyLinkedListRecursively(A));
 
+
+//_________________________________________________________
+// Finding Tail / Head in a list stored in an object
+//_________________________________________________________
 
  function findTail(list) {
    for (let currNode in list){
@@ -249,7 +268,6 @@ const myListObj = { C:C, B:B, A:A, D:D }
    }
   }
  }
- //console.log(findTail(myListObj))
 
  function findHead(list){
   let head;
@@ -262,28 +280,75 @@ const myListObj = { C:C, B:B, A:A, D:D }
   return head;
  }
 
- // Reverse list iteratively finding head first
 
- function reverseListHeadFirst(list){
-  let prev = null;
-  let curr = findHead(list);
-  let next = curr.next;
-  while(curr){
-    next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next; // the order of these reassignments is crucial
+//_________________________________________________________
+//////// Create a zipper list out of 2 linked lists
+//_________________________________________________________
+
+  const Q = new Node("Q");
+  const W = new Node("W");
+  const E = new Node("E");
+  const R = new Node("R");
+  const T = new Node("T");
+  const Y = new Node("Y");
+  Q.next = W
+  W.next = E
+  E.next = R
+  R.next = T
+  T.next = Y
+
+  const Z = new Node("Z");
+  const S = new Node("S");
+  const V = new Node("V");
+  Z.next = S
+  S.next = V
+   
+  //_________________________________________________________
+  // Create a zipper list out of 2 linked lists via recursion
+  //_________________________________________________________
+
+  // function zipperList(curr, nextCurr){
+  //  if (!curr.next) {
+  //   curr.next = nextCurr
+  //   return 
+  //  }
+  //  let next = curr.next;
+  //  curr.next = nextCurr;
+  //  return zipperList(nextCurr, next)
+  // }
+
+    function zipperList(head1, head2) {
+      if (!head1.next) {
+        head1.next = head2;
+        return;
+      }
+      let next = head1.next;
+      head1.next = head2;
+      return zipperList(head2, next);
+    }
+
+//zipperList(Q, Z)
+
+//_________________________________________________________
+// Create a zipper list out of 2 linked lists iteratively
+//_________________________________________________________
+
+function zipperList0(head1, head2){
+  let curr = head1;
+  let currNext = curr.next;
+  let nextCurr = head2;
+  while(currNext){
+    curr.next = nextCurr;
+    curr = nextCurr;
+    nextCurr = currNext
+    currNext = curr.next
   }
- return list
- }
+  return
+}
 
- //console.log(reverseListHeadFirst(myListObj))
+zipperList(Q,Z)
 
-
-
-
-
-
+console.log(Q,Z,W,S,E,V,R,T,Y)
 
 
 
