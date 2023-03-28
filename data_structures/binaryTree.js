@@ -18,20 +18,21 @@ class Node{
 //_______________________________
 // Creating a binary tree
 //_______________________________
-const d = new Node("D");
-const e = new Node("E");
-const g = new Node("G");
-const h = new Node("H");
-const b = new Node("B", d, e);
-const f = new Node("F", g, h);
-const c = new Node("C", null, f);
-const a = new Node("A", b, c);
+
+const d = new Node(4);
+const e = new Node(5);
+const g = new Node(7);
+const h = new Node(8);
+const b = new Node(2, d, e);
+const f = new Node(6, g, h);
+const c = new Node(3, null, f);
+const a = new Node(1, b, c);
 
 //__________________________________________________
 // Traversing a binary tree depth first iteratively
 //__________________________________________________
 
-function traversingBTreeDepthFirst(root){
+function traversingBTreeDepthFirstIteratively(root){
     let visited = [];
     let stack = [];
     let curr = null;
@@ -50,32 +51,25 @@ function traversingBTreeDepthFirst(root){
 // Traversing a binary tree depth first recursively
 //__________________________________________________
 
-function traversingBTreeDepthFirstRecursively(root){
-    let visited = [];
-    let stack = [];
-    stack.push(root);
-    getNode(stack, visited);
+function traversingBTreeDepthFirstRecursively(root){ 
+    let visited = [root.value];
+    root.left && getNode(root.left, visited);
+    root.right && getNode(root.right, visited);
     return visited
 }
 
-function getNode(stack, visited){
-    let curr = stack[stack.length - 1];
-    stack.pop();
+function getNode(curr, visited){
     visited.push(curr.value);
-    curr.left && stack.push(curr.left);
-    curr.right && stack.push(curr.right);
-    stack.length && getNode(stack, visited);
-    return
+    curr.left && getNode(curr.left, visited);
+    curr.right && getNode(curr.right, visited);
 }
-
-
 
 
 //__________________________________________________
 // Traversing a binary tree breadth first // ** uses queue instead of stack
 //__________________________________________________
 
-function traversingBTreeBreadthFirst(root) {
+function traversingBTreeBreadthFirstIteratively(root) {
   if(!root) return [];
   let visited = [root.value];
   let queue = [root];
@@ -83,7 +77,7 @@ function traversingBTreeBreadthFirst(root) {
   while (queue.length) {
    curr = queue[0];
   // queue.pop()
-    queue.shift()
+    queue.shift() // .shift() and .unshift() are O(n) time complexity !
    if(curr.left){
     visited.push(curr.left.value);
     //queue.unshift(curr.left);
@@ -153,30 +147,19 @@ function findNodeDepthFirst(node, root){
 //__________________________________________________
 
 
-function findNodeDepthFirstRecursively(node, root){
+function findNodeDepthFirstRecursively(targetNode, root){
    if (!root) return false;
-   let stack = [root];
-   return keepSearching(node, stack);
+   if(targetNode === root) return true
+   return (
+     findNodeDepthFirstRecursively(targetNode, root.left) ||
+     findNodeDepthFirstRecursively(targetNode, root.right)
+   );
 }
 
-function keepSearching(node, stack){
-   let curr = stack.pop();
-   console.log(curr)
-   if(curr === node){
-    return true;
-   } else {
-    curr.left && stack.push(curr.left);
-    curr.right && stack.push(curr.right);
-    if(stack.length){
-     return keepSearching(node, stack);
-    } 
-    return false   
-  }
-}
 
-//__________________________________________________
+//___________________________________________________________
 // Finding a node in a binary tree breadth first iteratively
-//__________________________________________________
+//___________________________________________________________
 
 function findNodeBreadthFirst(node, root){
    if(!root) return false
@@ -194,11 +177,12 @@ function findNodeBreadthFirst(node, root){
 
 
 //___________________________________________________________
-// Finding a node in a binary tree breadth first iteratively
+// Finding a node in a binary tree breadth first recursively
 //___________________________________________________________
 
 function findNodeBreadthFirstRecursively(node, root) {
   if (!root) return false;
+  if(root === node) return true
   let queue = [root];
   return keepSearchingBreadthFirst(node, queue)
 }
@@ -212,4 +196,117 @@ function keepSearchingBreadthFirst(node, queue){
   return false
 }
 
-console.log(findNodeBreadthFirstRecursively(c, a))
+
+//____________________________________________________________________________
+// Getting the sum/concatenation of node values in a binary tree depth first
+//____________________________________________________________________________
+
+function sumNodeValuesDepthFirst(root){
+    if(!root) return ""
+    let str = "";
+    let stack = [root];
+    while(stack.length){
+     let curr = stack.pop();
+     str+=curr.value;
+     curr.left && stack.push(curr.left)
+     curr.right && stack.push(curr.right);    
+    }
+    return str
+}
+
+//_______________________________________________________________________________________
+// Getting the sum/concatenation of node values in a binary tree depth first recursively
+//_______________________________________________________________________________________
+
+function sumNodeValuesDepthFirstRecursively(root){
+ if(!root) return ""
+ return (
+   root.value +
+   sumNodeValuesDepthFirstRecursively(root.left) +
+   sumNodeValuesDepthFirstRecursively(root.right)
+ );
+}
+
+//____________________________________________________________________________
+// Getting the sum/concatenation of node values in a binary tree breadth first
+//____________________________________________________________________________
+
+function sumNodeValuesBreadthFirst(root){
+    if(!root) return ""
+    let str = "";
+    let queue = [root];
+    let curr;
+    while(queue.length){
+      curr = queue.shift();
+      str += curr.value; 
+      if(curr.left){
+       queue.push(curr.left)
+      }  
+      if(curr.right){ 
+       queue.push(curr.right)
+      }    
+    }
+    return str
+}
+
+
+//____________________________________________________________________________
+// Getting the max node value in a binary tree depth first iteratively
+//____________________________________________________________________________
+
+function maxValueNodeDepthFirst(root){
+  let max = -Infinity;
+  let stack = [root];
+  while(stack.length){
+  let curr = stack.pop();
+  if(curr.value > max) max = curr.value;
+  if(curr.left) stack.push(curr.left);
+  if(curr.right) stack.push(curr.right);  
+  }
+  return max
+} 
+
+//____________________________________________________________________________
+// Getting the max node value in a binary tree Breadth first iteratively
+//____________________________________________________________________________
+
+function maxValueNodeBreadthFirst(root){
+   if(!root) return -Infinity
+   let max = -Infinity;
+   let queue = [root];
+  while(queue.length){
+   let curr = queue.shift();
+   if(queue.value > max) max = queue.value;
+   curr.left && queue.push(curr.left)
+   curr.right && queue.push(curr.right); 
+  }
+   return max
+}
+
+
+
+//____________________________________________________________________________
+// Getting the max node value in a binary tree recursively
+//____________________________________________________________________________
+
+function maxValueNodeRecursively(root){
+ if(!root) return -Infinity
+ const leftMax = maxValueNodeRecursively(root.left);
+ const rightMax = maxValueNodeRecursively(root.right);
+ return Math.max(root.value, leftMax, rightMax)
+}
+
+//____________________________________________________________________________
+// Getting the max root-to-leaf path sum value in a binary tree recursively
+//____________________________________________________________________________
+
+function maxPathSum(node){
+    if(!node) return -Infinity;
+    if(!node.left && !node.right) return node.value;
+    const greaterChildPathVal = Math.max(maxPathSum(node.left), maxPathSum(node.right))
+    return node.value + greaterChildPathVal
+}
+
+console.log(maxPathSum(a));
+
+
