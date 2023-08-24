@@ -23,34 +23,26 @@
     </style>
 </head>
 <body>
-    <h3>greetings</h3>
-    <h2>GREETINGS</h2>
-  <keech-item doggocharacter="keech" doggosize="2">
-    <!-- slot attr value has to match the name attr value 
-         of the slot element in the corresponding template;  -->
-    <h2 slot="title">Doggos</h2>
-    <ul slot="names">
-        <li>Keech</li>
-        <li>Poozh</li>
-        <li>Ceecee</li>
-    </ul>
-  </keech-item>
-<!-- inside the custom tag is the fallback content -->
+ 
 
 <script>
-    let customItem = document.querySelector('keech-item')
-    setTimeout(() => {
-        if(customItem.getAttribute('doggocharacter') === "keech"){
-            customItem.setAttribute('doggocharacter', "poozh")
-        } else {
-            customItem.setAttribute('doggocharacter', "keech")
-        }
-        if (customItem.getAttribute('doggosize') === "big") {
-            customItem.setAttribute('doggosize', "small")
-        } else {
-            customItem.setAttribute('doggosize', "big")
-        }
-    },2000)
+    fetch('https://wm-workouts-api.onrender.com/workouts')
+    .then(response => response.json())
+    .then(workouts => console.log(workouts))
+    .catch(error => console.log(error))
+    // let customItem = document.querySelector('keech-item')
+    // setTimeout(() => {
+    //     if(customItem.getAttribute('doggocharacter') === "keech"){
+    //         customItem.setAttribute('doggocharacter', "poozh")
+    //     } else {
+    //         customItem.setAttribute('doggocharacter', "keech")
+    //     }
+    //     if (customItem.getAttribute('doggosize') === "big") {
+    //         customItem.setAttribute('doggosize', "small")
+    //     } else {
+    //         customItem.setAttribute('doggosize', "big")
+    //     }
+    // },2000)
     
 </script>
 </body>
