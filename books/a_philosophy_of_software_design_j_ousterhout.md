@@ -66,6 +66,25 @@ Creating fewer more general methods
 The purpose of the latter being decreasing the cognitive load for devs who are using the code.
 _One of the most important elements of software design is determining who needs to know what, and when._
 
+(my effort below)
+
+class TextEditor {
+  constructor() {
+    this.written = [];
+    this.unwritten = [];
+  }
+  write(text) {
+    if (!text) {
+      // if no parameter is specified, the method will perform a "redo":
+      this.written.push(this.unwritten.pop());
+    } else {
+      this.written.push(text);
+    }
+  }
+  unwrite() {
+    this.unwritten.push(this.written.pop());
+  }
+}
 
 ### Different layer, different abstraction
 
@@ -99,6 +118,61 @@ Most modules have more users than developers.
 
 - Avoid mixing general and particular purpose code!
 
+
+### Error handling
+
+One of the worst sources of code complexity.
+
+How does code encounter exceptions?
+1. bad arguments;
+2. invoked method unable to complete operation - I/O failed, resource not found;
+3. network: lost/delayed packets, untimely server response, unconventional communication;
+4. buggy code, unhandled situations;
+
+How do we deal with exceptions?
+1. move forward and complete WIP (e.g. resend lost network packet);
+2. abort the operation in progress, report the exception upwards;
+
+Exception handling creates opportunities for more exceptions.
+
+Some exceptions can't be accurately simulated in test environment.
+
+#### Too many exceptions
+
+It's possible to be overdefensive!
+
+Best way to deal with exceptions: _reduce the number of places where exceptions have to be handled._
+
+Best way to reduce bugs: write simpler software.
+
+#### Exception-masking
+
+1. Detect and handle exceptions at lower level.
+E.g. TCP resending lost packets within its implementation. 
+
+2. Reissue requests over and over if server is unresponsive.
+When can throwing exceptions make things worse? When an application loses access to its files and the client keeps retrying.
+
+#### Exception aggregation
+
+Handle errors at the high level. E.g:
+- wrap many methods in one try-catch block;
+- use RAMCloud storage systems for crash recovery by 
+   1. compensating for lost data if one server crashes
+   2. crashing a server where corrupt data is found;
+
+In most apps there will be exceptions that are difficult or impossible to handle and don't occur very often.
+E.g. exhausted memory - there’s a good chance that the exception handler will also try to allocate memory.
+The simplest thing to do when they occur is print diagnostic info and abort the application.
+
+
+#### Eliminate special cases from the design
+
+E.g. instead of handling no-selection case, represent it internally as "".
+
+_Masking exceptions inside a module only makes sense if the exception information isn’t needed outside the module_
+
+Think of who needs to see the exception information and when before deciding to _define it away_!
 
 
 
