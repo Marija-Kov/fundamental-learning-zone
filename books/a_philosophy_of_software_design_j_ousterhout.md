@@ -175,5 +175,44 @@ _Masking exceptions inside a module only makes sense if the exception informatio
 Think of who needs to see the exception information and when before deciding to _define it away_!
 
 
+### On design
+
+Never design anything just once, no matter how smart you are.
+
+Solutions that require higher-level software to perform additional manipulations - red flag.
+
+### Comments
+
+Comments should improve system design.
+
+Good software loses value if it's poorly documented.
+
+_If users must read the code of a method in order to use it, then there is no abstraction._
+
+Declaration of a method itself is a small part of what true abstraction consists of.
+
+Human language is less precise but more expressive than code which makes it perfect for abstraction.
+
+_The overall idea behind comments is to capture information that was in the mind of the designer but couldn’t be represented in the code._
+
+Good comments compensate for code complexity by reducing cognitive load.
+
+_it is easier to comment everything rather than spend energy worrying about whether a comment is needed_
+
+_Comments augment the code by providing information at a different level of detail._
+
+Interface and implementation comments
+
+_If interface comments must also describe the implementation, then the class or method is shallow._
+
+Document side-effects in the interface comments. A side effect is any consequence of the method that affects the future behavior of the system but is not part of the result.
+
+Implementation comments answerthe questions _what_ the code is doing and _why_, not how.
+
+Add comments before every major block in a method. Explain the _why_ of any tricky aspects.
+
+Cross-module documentation - where to put it so that it's naturally found by developers?
+
+
 
 
