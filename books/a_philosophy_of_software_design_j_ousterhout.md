@@ -1,5 +1,7 @@
 ## A Philosophy of Software Design, J. Ousterhout
 
+- Tactical vs strategic programming
+
 ### On information hiding
 
 Purpose: to achieve deep modules.
@@ -183,7 +185,7 @@ Solutions that require higher-level software to perform additional manipulations
 
 ### Comments
 
-Comments should improve system design.
+Comments should improve system design. Comments should be a part of the design process, ideally written before the code.
 
 Good software loses value if it's poorly documented.
 
@@ -201,18 +203,147 @@ _it is easier to comment everything rather than spend energy worrying about whet
 
 _Comments augment the code by providing information at a different level of detail._
 
-Interface and implementation comments
+_If a method or variable requires a long comment, it is a red flag that you don’t have a good abstraction._
+
+- Most useful comments are the easiest to maintain.
+
+#### Interface and implementation comments
 
 _If interface comments must also describe the implementation, then the class or method is shallow._
 
 Document side-effects in the interface comments. A side effect is any consequence of the method that affects the future behavior of the system but is not part of the result.
 
-Implementation comments answerthe questions _what_ the code is doing and _why_, not how.
+- Implementation comments answer the questions _what_ the code is doing and _why_, not how.
 
-Add comments before every major block in a method. Explain the _why_ of any tricky aspects.
+- Add comments before every major block in a method. Explain the _why_ of any tricky aspects.
 
-Cross-module documentation - where to put it so that it's naturally found by developers?
-
-
+- Cross-module documentation - where to put it so that it's naturally found by developers?
 
 
+### Choosing names
+
+- If it's difficult to come up with a name for a variable, it might indicate that the variable's purpose is not clear and that there are underlying design issues.
+
+### Modifying code
+
+- Resist the temptation to make a quick fix.
+
+- If you're not making the design better, you're probably making it worse.
+
+- Keep comments updated and close to the code that they describe.
+
+- Avoid commenting in the commit log, place the documentation where teh developers are most likely to see it.
+
+### Consistency
+
+- _Consistency creates cognitive leverage_
+
+- Consistency is reflected in: naming, coding style, interfaces(with multiple implementations), design patterns, invariants(properties of variables/structure that are always true).
+
+- Document and enforce consistency with checkers.
+
+### Obviousness
+
+- Understand what makes the code nonobvious/hard to read.
+
+### Software trends
+
+#### OOP
+
+- Interface inheritance - provides leverage against complexity; code reuse, modularity, polymorphism, extensibility.
+ Requires same methods to be duplicated in every class that implements an interface.
+
+```
+interface Something {
+  someMethod()
+}
+
+interface OtherThing implements Something {
+ otherMethod()
+}
+
+class FinalThing implements OtherThing {
+  @Override
+  someMethod(){
+    // does anything
+  }
+  @Override
+  otherMethod(){
+    // does anything
+  }
+}
+
+```
+
+- Implementation/Class inheritance - parent class defines signatures and default implementations for child classes;
+Risks creating tightly coupled class hierarchies.
+
+```
+class Animal {
+  protected name;
+  protected age;
+  animalMethod(){...}
+  eat(){...}
+}
+
+class Dog extends Animal { <--- Dog uses Animal by inheritance. Dog is-a Animal
+  private String breed;
+  public Dog(name, age, breed){
+    // bind properites
+  }
+
+  @Override
+  animalMethod(){
+    // do something Dog-specific
+  }
+  getBreed(){
+    return this.breed; <--- never expose instance variable directly
+  }
+}
+```
+- Composition -
+
+```
+class Animal {
+  protected name;
+  protected age;
+  animalMethod(){...}
+  eat(){...}
+}
+
+class Dog {
+  private String breed
+  private Animal animal <--- Dog uses Animal class by composition. Dog has-a Animal
+  public Dog(){
+    this.animal = new Animal()
+  }
+
+  dogMethod(){
+    animal.animalMethod()
+  }
+  dogEat(){
+    animal.animalEat()
+  }
+}
+```
+
+#### Agile development
+
+- Incremental and iterative; _the increments of development should be abstractions, not features_
+
+- Can lead to tactical programming (as opposed to strategic) with delaying generalization (YAGNI)
+
+#### Test-driven development
+
+_The problem with test-driven development is that it focuses attention on getting specific features working, rather than finding the best design._
+_Test-driven development is too incremental: at any point in time, it’s tempting to just hack in the next feature to make the next test pass._
+
+- Test-first approach works for fixing bugs - write tests that should pass when the bud is fixed.
+
+#### Design patterns
+
+- e.g. getters and setters (allow more things to happen when getting and setting)
+
+- an alternative to design, risk: overapplication;
+
+- Always challenge new software development paradigms. How do they minimize complexity?
