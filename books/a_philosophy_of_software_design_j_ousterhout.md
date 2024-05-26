@@ -347,3 +347,32 @@ _Test-driven development is too incremental: at any point in time, it’s tempti
 - an alternative to design, risk: overapplication;
 
 - Always challenge new software development paradigms. How do they minimize complexity?
+
+### Performance
+
+- How do performance considerations affect the design process?
+
+- Relatively expensive operations:
+         - network communication - 5-10 microsec within a datacenter, 10-100 ms for wide-area roundtrips
+         - I/O to secondary storage - disk: 5-10 ms, flash: 10-100 microsec, newer nonvolatile memories down to 1 microsec
+         - dynamic memory allocation - allocation, freeing, garbage collection
+         - cache misses
+
+- Run micro-benchmarks
+
+- _when storing a large collection of objects that will be looked up using a key value, you could use either a hash table or an ordered map_
+
+- It's worth not considering performance to eliminate complexity early on until the performance proves to be an issue.
+
+- Never modify based on intuition, always measure.
+
+- Redesigning for performance should be the last resort!
+
+_what is the smallest amount of code that must be executed to carry out the desired task in the common case?_
+
+- Remove special cases from the critical path. Performance isn't as important for special cases.
+
+- Too many shallow layers cause performance issues.
+
+- Find the smallest amount of code that must be executed in the common case.
+
