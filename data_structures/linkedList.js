@@ -87,6 +87,11 @@ class LinkedList {
   }
 }
 
+const test = (title, callback) => {
+  console.log(` 🔹 ${title} 🔹 `);
+  callback();
+};
+
 /*
  Traversing a linked list:
 */
@@ -102,9 +107,7 @@ class LinkedList {
     return nodeArr;
   }
 
-  const test = () => {
-    console.log(" 🔹 Traverse linked list iteratively 🔹 ");
-
+  test("Traverse linked list iteratively", () => {
     const A = new ListNode("A");
     const B = new ListNode("B");
     const C = new ListNode("C");
@@ -118,8 +121,7 @@ class LinkedList {
       console.log("❌ Printed list not as expected");
       console.log(list);
     }
-  };
-  test();
+  });
 })();
 
 // ** Note about recursion: every time a function is called, it's added to the call stack, which adds space complexity - O(n)
@@ -133,9 +135,7 @@ class LinkedList {
     return "done";
   }
 
-  const test = () => {
-    console.log(" 🔹 Traversing a linked list recursively 🔹 ");
-
+  test("Traverse linked list recursively", () => {
     const A = new ListNode("A");
     const B = new ListNode("B");
     const C = new ListNode("C");
@@ -143,8 +143,7 @@ class LinkedList {
     B.next = C;
 
     printLinkedList(A);
-  };
-  test();
+  });
 })();
 
 (() => {
@@ -161,11 +160,7 @@ class LinkedList {
     return nodeArr;
   }
 
-  const test = () => {
-    console.log(
-      " 🔹 Traversing a linked list recursively returning an array of node values 🔹 "
-    );
-
+  test("Traverse linked list recursively returning an array of node values", () => {
     const A = new ListNode("A");
     const B = new ListNode("B");
     const C = new ListNode("C");
@@ -179,8 +174,7 @@ class LinkedList {
     } else {
       console.log("❌ List values not as expected");
     }
-  };
-  test();
+  });
 })();
 
 /*
@@ -200,9 +194,8 @@ class LinkedList {
     }
     return sum;
   }
-  const test = () => {
-    console.log(" 🔹 Sum of linked list values iteratively 🔹 ");
 
+  test("Sum of linked list values iteratively", () => {
     const A = new ListNode(3);
     const B = new ListNode(6);
     const C = new ListNode(7);
@@ -216,8 +209,7 @@ class LinkedList {
     } else {
       console.log("❌ Sum of list values not as expected");
     }
-  };
-  test();
+  });
 })();
 
 (() => {
@@ -235,9 +227,7 @@ class LinkedList {
     return sum;
   }
 
-  const test = () => {
-    console.log(" 🔹 Sum of linked list values recursively 🔹 ");
-
+  test("Sum of linked list values recursively", () => {
     const A = new ListNode(3);
     const B = new ListNode(6);
     const C = new ListNode(7);
@@ -251,8 +241,7 @@ class LinkedList {
     } else {
       console.log("❌ Sum of list values not as expected");
     }
-  };
-  test();
+  });
 })();
 
 /*
@@ -271,9 +260,7 @@ class LinkedList {
     return `value ${val} not found`;
   }
 
-  const test = () => {
-    console.log(" 🔹 Find a value in a linked list 🔹 ");
-
+  test("Find a value in a linked list", () => {
     const list = new LinkedList();
     list.append("A");
     list.append("B");
@@ -295,8 +282,7 @@ class LinkedList {
     } else {
       console.log("❌ Should not find non-existing node");
     }
-  };
-  test();
+  });
 })();
 
 /*
@@ -323,9 +309,7 @@ class LinkedList {
     }
   }
 
-  const test = () => {
-    console.log(" 🔹 Find tail and head of a singly linked list 🔹 ");
-
+  test("Find tail and head of a singly linked list", () => {
     const list = {};
     list.B = new ListNode("B");
     list.A = new ListNode("A");
@@ -347,8 +331,7 @@ class LinkedList {
     } else {
       console.log("❌ Found tail not as expected");
     }
-  };
-  test();
+  });
 })();
 
 /*
@@ -368,9 +351,7 @@ class LinkedList {
     }
     return;
   }
-  const test = () => {
-    console.log(" 🔹 Reverse a singly linked list iteratively 🔹 ");
-
+  test("Reverse a singly linked list iteratively", () => {
     const A = new ListNode("A");
     const B = new ListNode("B");
     const C = new ListNode("C");
@@ -386,8 +367,7 @@ class LinkedList {
     } else {
       console.log("❌ Reversed list not as expected");
     }
-  };
-  test();
+  });
 })();
 
 (() => {
@@ -399,9 +379,7 @@ class LinkedList {
     return;
   }
 
-  const test = () => {
-    console.log(" 🔹 Reverse a singly linked list recursively 🔹 ");
-
+  test("Reverse a singly linked list recursively", () => {
     const A = new ListNode("A");
     const B = new ListNode("B");
     const C = new ListNode("C");
@@ -417,8 +395,7 @@ class LinkedList {
     } else {
       console.log("❌ Reversed list not as expected");
     }
-  };
-  test();
+  });
 })();
 
 /*
@@ -439,9 +416,7 @@ class LinkedList {
     return (curr.next = nextCurr);
   }
 
-  const test = () => {
-    console.log(" 🔹 Create a zipper list iteratively 🔹 ");
-
+  test("Create a zipper list iteratively", () => {
     const Q = new ListNode("Q"); // head1
     const W = new ListNode("W"); // head2
     const E = new ListNode("E");
@@ -474,8 +449,7 @@ class LinkedList {
       console.log(R.next.value);
       console.log(T.next.value);
     }
-  };
-  test();
+  });
 })();
 
 (() => {
@@ -489,9 +463,7 @@ class LinkedList {
     return zipperList(head2, next);
   }
 
-  const test = () => {
-    console.log(" 🔹 Create a zipper list recursively 🔹 ");
-
+  test("Create a zipper list recursively", () => {
     const Q = new ListNode("Q"); // head1
     const W = new ListNode("W"); // head2
     const E = new ListNode("E");
@@ -524,6 +496,5 @@ class LinkedList {
       console.log(R.next.value);
       console.log(T.next.value);
     }
-  };
-  test();
+  });
 })();
