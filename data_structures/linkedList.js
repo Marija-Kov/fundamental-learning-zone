@@ -92,14 +92,6 @@ class LinkedList {
 */
 
 (() => {
-  console.log(" 🔹 Traverse linked list iteratively 🔹 ");
-
-  const A = new ListNode("A");
-  const B = new ListNode("B");
-  const C = new ListNode("C");
-  A.next = B;
-  B.next = C;
-
   function printLinkedList(head) {
     const nodeArr = [head.value];
     let curr = head.next;
@@ -110,27 +102,29 @@ class LinkedList {
     return nodeArr;
   }
 
-  const list = printLinkedList(A);
+  const test = () => {
+    console.log(" 🔹 Traverse linked list iteratively 🔹 ");
 
-  if (list[0] === "A" && list[1] === "B" && list[2] === "C") {
-    console.log("✅ Printed list as expected");
-  } else {
-    console.log("❌ Printed list not as expected");
-    console.log(list);
-  }
+    const A = new ListNode("A");
+    const B = new ListNode("B");
+    const C = new ListNode("C");
+    A.next = B;
+    B.next = C;
+
+    const list = printLinkedList(A);
+    if (list[0] === "A" && list[1] === "B" && list[2] === "C") {
+      console.log("✅ Printed list as expected");
+    } else {
+      console.log("❌ Printed list not as expected");
+      console.log(list);
+    }
+  };
+  test();
 })();
 
 // ** Note about recursion: every time a function is called, it's added to the call stack, which adds space complexity - O(n)
 
 (() => {
-  console.log(" 🔹 Traversing a linked list recursively 🔹 ");
-
-  const A = new ListNode("A");
-  const B = new ListNode("B");
-  const C = new ListNode("C");
-  A.next = B;
-  B.next = C;
-
   function printLinkedList(head) {
     if (head) {
       console.log(head.value);
@@ -139,20 +133,21 @@ class LinkedList {
     return "done";
   }
 
-  printLinkedList(A);
+  const test = () => {
+    console.log(" 🔹 Traversing a linked list recursively 🔹 ");
+
+    const A = new ListNode("A");
+    const B = new ListNode("B");
+    const C = new ListNode("C");
+    A.next = B;
+    B.next = C;
+
+    printLinkedList(A);
+  };
+  test();
 })();
 
 (() => {
-  console.log(
-    " 🔹 Traversing a linked list recursively returning an array of node values 🔹 "
-  );
-
-  const A = new ListNode("A");
-  const B = new ListNode("B");
-  const C = new ListNode("C");
-  A.next = B;
-  B.next = C;
-
   function addNodeHelper(node, arr) {
     if (node) {
       arr.push(node.value);
@@ -166,13 +161,26 @@ class LinkedList {
     return nodeArr;
   }
 
-  const list = printLinkedList(A);
+  const test = () => {
+    console.log(
+      " 🔹 Traversing a linked list recursively returning an array of node values 🔹 "
+    );
 
-  if (list[0] === "A" && list[1] === "B" && list[2] === "C") {
-    console.log("✅ List values as expected");
-  } else {
-    console.log("❌ List values not as expected");
-  }
+    const A = new ListNode("A");
+    const B = new ListNode("B");
+    const C = new ListNode("C");
+    A.next = B;
+    B.next = C;
+
+    const list = printLinkedList(A);
+
+    if (list[0] === "A" && list[1] === "B" && list[2] === "C") {
+      console.log("✅ List values as expected");
+    } else {
+      console.log("❌ List values not as expected");
+    }
+  };
+  test();
 })();
 
 /*
@@ -180,15 +188,6 @@ class LinkedList {
 */
 
 (() => {
-  console.log(" 🔹 Sum of linked list values iteratively 🔹 ");
-
-  const A = new ListNode(3);
-  const B = new ListNode(6);
-  const C = new ListNode(7);
-
-  A.next = B;
-  B.next = C;
-
   function getSum(head) {
     if (!(head instanceof ListNode)) {
       return "invalid input";
@@ -201,26 +200,27 @@ class LinkedList {
     }
     return sum;
   }
+  const test = () => {
+    console.log(" 🔹 Sum of linked list values iteratively 🔹 ");
 
-  const sum = getSum(A);
+    const A = new ListNode(3);
+    const B = new ListNode(6);
+    const C = new ListNode(7);
+    A.next = B;
+    B.next = C;
 
-  if (sum === 16) {
-    console.log("✅ Sum of list values as expected");
-  } else {
-    console.log("❌ Sum of list values not as expected");
-  }
+    const sum = getSum(A);
+
+    if (sum === 16) {
+      console.log("✅ Sum of list values as expected");
+    } else {
+      console.log("❌ Sum of list values not as expected");
+    }
+  };
+  test();
 })();
 
 (() => {
-  console.log(" 🔹 Sum of linked list values recursively 🔹 ");
-
-  const A = new ListNode(3);
-  const B = new ListNode(6);
-  const C = new ListNode(7);
-
-  A.next = B;
-  B.next = C;
-
   function getSum(head) {
     if (!head) return null;
     let sum = 0;
@@ -235,13 +235,24 @@ class LinkedList {
     return sum;
   }
 
-  const sum = getSum(A);
+  const test = () => {
+    console.log(" 🔹 Sum of linked list values recursively 🔹 ");
 
-  if (sum === 16) {
-    console.log("✅ Sum of list values as expected");
-  } else {
-    console.log("❌ Sum of list values not as expected");
-  }
+    const A = new ListNode(3);
+    const B = new ListNode(6);
+    const C = new ListNode(7);
+    A.next = B;
+    B.next = C;
+
+    const sum = getSum(A);
+
+    if (sum === 16) {
+      console.log("✅ Sum of list values as expected");
+    } else {
+      console.log("❌ Sum of list values not as expected");
+    }
+  };
+  test();
 })();
 
 /*
@@ -249,15 +260,6 @@ class LinkedList {
 */
 
 (() => {
-  console.log(" 🔹 Find a value in a linked list 🔹 ");
-
-  const list = new LinkedList();
-  list.append("A");
-  list.append("B");
-  list.deleteHead(); // ** see LinkedList append() for explanation
-  list.append("C");
-  list.append("D");
-
   function find(list, val) {
     let curr = list.head;
     let pos = 0;
@@ -269,85 +271,32 @@ class LinkedList {
     return `value ${val} not found`;
   }
 
-  const find1 = find(list, "C");
-  const find2 = find(list, "U");
+  const test = () => {
+    console.log(" 🔹 Find a value in a linked list 🔹 ");
 
-  if (find1 === "C found at position 2") {
-    console.log("✅ Found a node value as expected");
-  } else {
-    console.log("❌ Did not find value as expected");
-    console.log(find1);
-  }
-  if (find2 === "value U not found") {
-    console.log("✅ Should not find non-existing node");
-  } else {
-    console.log("❌ Should not find non-existing node");
-  }
-})();
+    const list = new LinkedList();
+    list.append("A");
+    list.append("B");
+    list.deleteHead(); // ** see LinkedList append() for explanation
+    list.append("C");
+    list.append("D");
 
-/*
- Reversing a singly linked list
-*/
+    const find1 = find(list, "C");
+    const find2 = find(list, "U");
 
-(() => {
-  console.log(" 🔹 Reverse a singly linked list iteratively 🔹 ");
-
-  const A = new ListNode("A");
-  const B = new ListNode("B");
-  const C = new ListNode("C");
-  const D = new ListNode("D");
-  A.next = B;
-  B.next = C;
-  C.next = D;
-
-  function reverseSinglyLinkedList(head) {
-    let prev = null;
-    let curr = head;
-    let next = head.next;
-    while (curr) {
-      next = curr.next;
-      curr.next = prev;
-      prev = curr;
-      curr = next; // the order of these reassignments is crucial
+    if (find1 === "C found at position 2") {
+      console.log("✅ Found a node value as expected");
+    } else {
+      console.log("❌ Did not find value as expected");
+      console.log(find1);
     }
-    return;
-  }
-
-  reverseSinglyLinkedList(A);
-
-  if (A.next === null && B.next === A && C.next === B && D.next === C) {
-    console.log("✅ Reversed list as expected");
-  } else {
-    console.log("❌ Reversed list not as expected");
-  }
-})();
-
-(() => {
-  console.log(" 🔹 Reverse a singly linked list recursively 🔹 ");
-
-  const A = new ListNode("A");
-  const B = new ListNode("B");
-  const C = new ListNode("C");
-  const D = new ListNode("D");
-  A.next = B;
-  B.next = C;
-  C.next = D;
-
-  function reverseSinglyLinkedList(curr, prev = null) {
-    let next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    if (next) reverseSinglyLinkedList(next, prev);
-    return;
-  }
-
-  reverseSinglyLinkedList(A);
-
-  if (A.next === null && B.next === A && C.next === B && D.next === C) {
-    console.log("✅ Reversed list as expected");
-  } else {
-    console.log("❌ Reversed list not as expected");
-  }
+    if (find2 === "value U not found") {
+      console.log("✅ Should not find non-existing node");
+    } else {
+      console.log("❌ Should not find non-existing node");
+    }
+  };
+  test();
 })();
 
 /*
@@ -355,15 +304,6 @@ class LinkedList {
 */
 
 (() => {
-  console.log(" 🔹 Find tail and head of a singly linked list 🔹 ");
-
-  const list = {};
-  list.B = new ListNode("B");
-  list.A = new ListNode("A");
-  list.C = new ListNode("C");
-  list.A.next = list.B;
-  list.B.next = list.C;
-
   function findHead(list) {
     let nonHeads = Object.keys(list).map((node) => {
       return list[node].next && list[node].next.value;
@@ -383,20 +323,102 @@ class LinkedList {
     }
   }
 
-  const head = findHead(list);
-  const tail = findTail(list);
+  const test = () => {
+    console.log(" 🔹 Find tail and head of a singly linked list 🔹 ");
 
-  if (head === "A") {
-    console.log("✅ Found head as expected");
-  } else {
-    console.log("❌ Found head not as expected");
-    console.log(head);
+    const list = {};
+    list.B = new ListNode("B");
+    list.A = new ListNode("A");
+    list.C = new ListNode("C");
+    list.A.next = list.B;
+    list.B.next = list.C;
+
+    const head = findHead(list);
+    const tail = findTail(list);
+
+    if (head === "A") {
+      console.log("✅ Found head as expected");
+    } else {
+      console.log("❌ Found head not as expected");
+      console.log(head);
+    }
+    if (tail.value === "C") {
+      console.log("✅ Found tail as expected");
+    } else {
+      console.log("❌ Found tail not as expected");
+    }
+  };
+  test();
+})();
+
+/*
+ Reversing a singly linked list
+*/
+
+(() => {
+  function reverseSinglyLinkedList(head) {
+    let prev = null;
+    let curr = head;
+    let next = head.next;
+    while (curr) {
+      next = curr.next;
+      curr.next = prev;
+      prev = curr;
+      curr = next; // the order of these reassignments is crucial
+    }
+    return;
   }
-  if (tail.value === "C") {
-    console.log("✅ Found tail as expected");
-  } else {
-    console.log("❌ Found tail not as expected");
+  const test = () => {
+    console.log(" 🔹 Reverse a singly linked list iteratively 🔹 ");
+
+    const A = new ListNode("A");
+    const B = new ListNode("B");
+    const C = new ListNode("C");
+    const D = new ListNode("D");
+    A.next = B;
+    B.next = C;
+    C.next = D;
+
+    reverseSinglyLinkedList(A);
+
+    if (A.next === null && B.next === A && C.next === B && D.next === C) {
+      console.log("✅ Reversed list as expected");
+    } else {
+      console.log("❌ Reversed list not as expected");
+    }
+  };
+  test();
+})();
+
+(() => {
+  function reverseSinglyLinkedList(curr, prev = null) {
+    let next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    if (next) reverseSinglyLinkedList(next, prev);
+    return;
   }
+
+  const test = () => {
+    console.log(" 🔹 Reverse a singly linked list recursively 🔹 ");
+
+    const A = new ListNode("A");
+    const B = new ListNode("B");
+    const C = new ListNode("C");
+    const D = new ListNode("D");
+    A.next = B;
+    B.next = C;
+    C.next = D;
+
+    reverseSinglyLinkedList(A);
+
+    if (A.next === null && B.next === A && C.next === B && D.next === C) {
+      console.log("✅ Reversed list as expected");
+    } else {
+      console.log("❌ Reversed list not as expected");
+    }
+  };
+  test();
 })();
 
 /*
@@ -404,21 +426,6 @@ class LinkedList {
 */
 
 (() => {
-  console.log(" 🔹 Create a zipper list iteratively 🔹 ");
-
-  const Q = new ListNode("Q"); // head1
-  const W = new ListNode("W"); // head2
-  const E = new ListNode("E");
-  const R = new ListNode("R");
-  const T = new ListNode("T");
-  const Y = new ListNode("Y");
-  // list 1: Q->E->T
-  // list 2: W->R->Y
-  Q.next = E;
-  E.next = T;
-  W.next = R;
-  R.next = Y;
-
   function zipperList(head1, head2) {
     let curr = head1;
     let currNext = curr.next;
@@ -432,43 +439,46 @@ class LinkedList {
     return (curr.next = nextCurr);
   }
 
-  zipperList(Q, W);
+  const test = () => {
+    console.log(" 🔹 Create a zipper list iteratively 🔹 ");
 
-  if (
-    Q.next === W &&
-    W.next === E &&
-    E.next === R &&
-    R.next === T &&
-    T.next === Y
-  ) {
-    console.log("✅ Zipper list as expected");
-  } else {
-    console.log("❌ Zipper list not as expected");
-    console.log(Q.value);
-    console.log(Q.next.value);
-    console.log(W.next.value);
-    console.log(E.next.value);
-    console.log(R.next.value);
-    console.log(T.next.value);
-  }
+    const Q = new ListNode("Q"); // head1
+    const W = new ListNode("W"); // head2
+    const E = new ListNode("E");
+    const R = new ListNode("R");
+    const T = new ListNode("T");
+    const Y = new ListNode("Y");
+    // list 1: Q->E->T
+    // list 2: W->R->Y
+    Q.next = E;
+    E.next = T;
+    W.next = R;
+    R.next = Y;
+
+    zipperList(Q, W);
+
+    if (
+      Q.next === W &&
+      W.next === E &&
+      E.next === R &&
+      R.next === T &&
+      T.next === Y
+    ) {
+      console.log("✅ Zipper list as expected");
+    } else {
+      console.log("❌ Zipper list not as expected");
+      console.log(Q.value);
+      console.log(Q.next.value);
+      console.log(W.next.value);
+      console.log(E.next.value);
+      console.log(R.next.value);
+      console.log(T.next.value);
+    }
+  };
+  test();
 })();
 
 (() => {
-  console.log(" 🔹 Create a zipper list recursively 🔹 ");
-
-  const Q = new ListNode("Q"); // head1
-  const W = new ListNode("W"); // head2
-  const E = new ListNode("E");
-  const R = new ListNode("R");
-  const T = new ListNode("T");
-  const Y = new ListNode("Y");
-  // list 1: Q->E->T
-  // list 2: W->R->Y
-  Q.next = E;
-  E.next = T;
-  W.next = R;
-  R.next = Y;
-
   function zipperList(head1, head2) {
     if (!head1.next) {
       head1.next = head2;
@@ -479,23 +489,41 @@ class LinkedList {
     return zipperList(head2, next);
   }
 
-  zipperList(Q, W);
+  const test = () => {
+    console.log(" 🔹 Create a zipper list recursively 🔹 ");
 
-  if (
-    Q.next === W &&
-    W.next === E &&
-    E.next === R &&
-    R.next === T &&
-    T.next === Y
-  ) {
-    console.log("✅ Zipper list as expected");
-  } else {
-    console.log("❌ Zipper list not as expected");
-    console.log(Q.value);
-    console.log(Q.next.value);
-    console.log(W.next.value);
-    console.log(E.next.value);
-    console.log(R.next.value);
-    console.log(T.next.value);
-  }
+    const Q = new ListNode("Q"); // head1
+    const W = new ListNode("W"); // head2
+    const E = new ListNode("E");
+    const R = new ListNode("R");
+    const T = new ListNode("T");
+    const Y = new ListNode("Y");
+    // list 1: Q->E->T
+    // list 2: W->R->Y
+    Q.next = E;
+    E.next = T;
+    W.next = R;
+    R.next = Y;
+
+    zipperList(Q, W);
+
+    if (
+      Q.next === W &&
+      W.next === E &&
+      E.next === R &&
+      R.next === T &&
+      T.next === Y
+    ) {
+      console.log("✅ Zipper list as expected");
+    } else {
+      console.log("❌ Zipper list not as expected");
+      console.log(Q.value);
+      console.log(Q.next.value);
+      console.log(W.next.value);
+      console.log(E.next.value);
+      console.log(R.next.value);
+      console.log(T.next.value);
+    }
+  };
+  test();
 })();
