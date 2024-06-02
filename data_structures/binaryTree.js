@@ -11,17 +11,56 @@ class Node {
   }
 }
 
+function tree() {
+  const d = new Node(4);
+  const e = new Node(5);
+  const g = new Node(7);
+  const h = new Node(8);
+  const b = new Node(2, d, e);
+  const f = new Node(6, g, h);
+  const c = new Node(3, null, f);
+  const a = new Node(1, b, c); // root
+
+  return {
+    root: a,
+    nodes: { b, c, d, e, f, g, h },
+  };
+}
+
 // Main properties of a binary tree:
 // 1) only one root, i.e. only one node that has no parent
 // 2) up to 2 children per node
 // 3) only one way to get to any node from the root
 // implicitly: 4) up to 1 parent per node i.e. all nodes have 1 parent except for the root
 
-// ** queue --> loop, stack --> recursion
+// ** Depth-first -> LIFO -> stack ; breadth-first -> FIFO -> queue;
 
-//__________________________________________________
-// Traverse depth first using a loop
-//__________________________________________________
+/*
+ Depth-first recursive traversal: 
+*/
+(() => {
+  function traverse(node, visited) {
+    if (!node) return visited;
+    visited.push(node.value);
+    if (node.left) traverse(node.left, visited);
+    if (node.right) traverse(node.right, visited);
+    return visited;
+  }
+
+  test("Depth-first recursive traversal", () => {
+    const { root } = tree();
+    const visited = traverse(root, []);
+    if (visited.join(",") === "1,2,4,5,3,6,7,8") {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
+})();
+
+/*
+ Depth-first iterative traversal:
+*/
 (() => {
   function traverse(root) {
     let visited = [];
@@ -38,18 +77,9 @@ class Node {
     return visited;
   }
 
-  test("Traverse a binary tree using a loop depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const visited = traverse(a);
-
+  test("Depth-first iterative traversal", () => {
+    const { root } = tree();
+    const visited = traverse(root);
     if (visited.join(",") === "1,3,6,8,7,2,5,4") {
       console.log("✅ As expected");
     } else {
@@ -58,15 +88,15 @@ class Node {
   });
 })();
 
-//__________________________________________________
-// Traverse depth first recursively
-//__________________________________________________
+/*
+ Depth-first iterative traversal with a helper function:
+*/
 (() => {
   function traverse(root) {
     let visited = [root.value];
     root.left && getNode(root.left, visited);
     root.right && getNode(root.right, visited);
-    return visited;
+    return visited; // must return at the top level because getNode only runs conditionally
   }
 
   function getNode(curr, visited) {
@@ -75,18 +105,9 @@ class Node {
     curr.right && getNode(curr.right, visited);
   }
 
-  test("Traverse a binary tree recursively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const visited = traverse(a);
-
+  test("Depth-first iterative traversal with a helper function", () => {
+    const { root } = tree();
+    const visited = traverse(root);
     if (visited.join(",") === "1,2,4,5,3,6,7,8") {
       console.log("✅ As expected");
     } else {
@@ -95,9 +116,9 @@ class Node {
   });
 })();
 
-//__________________________________________________
-// Traverse breadth first iteratively
-//__________________________________________________
+/*
+ Breadth-first iterative traversal:
+*/
 (() => {
   function traverse(root) {
     if (!root) return [];
@@ -105,35 +126,22 @@ class Node {
     let queue = [root];
     let curr = null;
     while (queue.length) {
-      curr = queue[0];
-      // queue.pop()
-      queue.shift(); // .shift() and .unshift() are O(n) time complexity !
+      curr = queue.shift();
       if (curr.left) {
         visited.push(curr.left.value);
-        //queue.unshift(curr.left);
         queue.push(curr.left);
       }
       if (curr.right) {
         visited.push(curr.right.value);
-        //queue.unshift(curr.right);
         queue.push(curr.right);
       }
     }
     return visited;
   }
 
-  test("Traverse a binary tree iteratively breadth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const visited = traverse(a);
-
+  test("Breadth-first iterative traversal", () => {
+    const { root } = tree();
+    const visited = traverse(root);
     if (visited.join(",") === "1,2,3,4,5,6,7,8") {
       console.log("✅ As expected");
     } else {
@@ -142,9 +150,9 @@ class Node {
   });
 })();
 
-//__________________________________________________
-// Traverse depth first iteratively
-//__________________________________________________
+/*
+ Breadth-first iterative traversal using a helper function:
+ */
 (() => {
   function traverse(root) {
     if (!root) return [];
@@ -169,18 +177,9 @@ class Node {
     return;
   }
 
-  test("Traverse a binary tree iteratively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const visited = traverse(a);
-
+  test("Breadth-first iterative traversal using a helper function", () => {
+    const { root } = tree();
+    const visited = traverse(root);
     if (visited.join(",") === "1,2,3,4,5,6,7,8") {
       console.log("✅ As expected");
     } else {
@@ -189,9 +188,9 @@ class Node {
   });
 })();
 
-//__________________________________________________
-// Find node depth first using loop
-//__________________________________________________
+/*
+ Depth-first iterative node search:
+*/
 (() => {
   function findNode(node, root) {
     if (!root) return false;
@@ -207,19 +206,21 @@ class Node {
     return false;
   }
 
-  test("Find node using loop depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
+  test("Depth-first iterative node search", () => {
+    const { root, nodes } = tree();
+    const aNode = nodes[Object.keys(nodes)[3]];
+    const target = findNode(aNode, root);
+    if (target) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
 
-    const node = findNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first iterative node search, not found", () => {
+    const { root } = tree();
+    const target = findNode({ value: "x" }, root);
+    if (!target) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -227,10 +228,9 @@ class Node {
   });
 })();
 
-//__________________________________________________
-// Find node depth first recursively
-//__________________________________________________
-
+/*
+ Depth-first recursive node search:
+*/
 (() => {
   function findNode(targetNode, root) {
     if (!root) return false;
@@ -238,19 +238,21 @@ class Node {
     return findNode(targetNode, root.left) || findNode(targetNode, root.right);
   }
 
-  test("Find node recursively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
+  test("Depth-first recursive node search", () => {
+    const { root, nodes } = tree();
+    const aNode = nodes[Object.keys(nodes)[3]];
+    const target = findNode(aNode, root);
+    if (target) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
 
-    const node = findNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first recursive node search, not found", () => {
+    const { root } = tree();
+    const target = findNode({ value: "x" }, root);
+    if (!target) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -258,9 +260,9 @@ class Node {
   });
 })();
 
-//___________________________________________________________
-// Find node breadth first iteratively
-//___________________________________________________________
+/*
+ Breadth-first iterative node search:
+*/
 (() => {
   function findNode(node, root) {
     if (!root) return false;
@@ -276,19 +278,21 @@ class Node {
     return false;
   }
 
-  test("Find node iteratively breadth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
+  test("Breadth-first iterative node search", () => {
+    const { root, nodes } = tree();
+    const aNode = nodes[Object.keys(nodes)[3]];
+    const target = findNode(aNode, root);
+    if (target) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
 
-    const node = findNode(a);
-
-    if (0 !== 0) {
+  test("Breadth-first iterative node search, not found", () => {
+    const { root } = tree();
+    const target = findNode({ value: "x" }, root);
+    if (!target) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -296,9 +300,9 @@ class Node {
   });
 })();
 
-//___________________________________________________________
-// Find node breadth first recursively
-//___________________________________________________________
+/*
+ Breadth-first iterative node search using a helper function:
+*/
 (() => {
   function findNode(node, root) {
     if (!root) return false;
@@ -316,19 +320,21 @@ class Node {
     return false;
   }
 
-  test("Find node recursively breadth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
+  test("Breadth-first iterative node search using a helper function", () => {
+    const { root, nodes } = tree();
+    const aNode = nodes[Object.keys(nodes)[3]];
+    const target = findNode(aNode, root);
+    if (target) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
 
-    const node = findNode(a);
-
-    if (0 !== 0) {
+  test("Breadth-first iterative node search using a helper function, not found", () => {
+    const { root } = tree();
+    const target = findNode({ value: "x" }, root);
+    if (!target) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -336,9 +342,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get the sum/concatenation of node values depth first
-//____________________________________________________________________________
+/*
+ Depth-first iterative sum/concat of node values:
+*/
 (() => {
   function sumNode(root) {
     if (!root) return "";
@@ -353,19 +359,10 @@ class Node {
     return str;
   }
 
-  test("Sum/concat nodes iteratively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const sum = sumNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first iterative sum/concat of node values", () => {
+    const { root } = tree();
+    const sum = sumNode(root);
+    if (sum === "13687254") {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -373,28 +370,19 @@ class Node {
   });
 })();
 
-//_______________________________________________________________________________________
-// Get sum/concatenation of node values depth first recursively
-//_______________________________________________________________________________________
+/*
+ Depth-first recursive sum/concat of node values:
+*/
 (() => {
   function sumNode(root) {
     if (!root) return "";
     return root.value + sumNode(root.left) + sumNode(root.right);
   }
 
-  test("Sum/concat nodes recursively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const sum = sumNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first recursive sum/concat of node values", () => {
+    const { root } = tree();
+    const sum = sumNode(root);
+    if (sum === "12453678") {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -402,9 +390,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get sum/concatenation of node values breadth first
-//____________________________________________________________________________
+/*
+ Breadth-first iterative sum/concat of node values:
+*/
 (() => {
   function sumNode(root) {
     if (!root) return "";
@@ -424,19 +412,10 @@ class Node {
     return str;
   }
 
-  test("Sum/concat nodes iteratively breadth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const sum = sumNode(a);
-
-    if (0 !== 0) {
+  test("Breadth-first iterative sum/concat of node values", () => {
+    const { root } = tree();
+    const sum = sumNode(root);
+    if (sum === "12345678") {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -444,9 +423,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get max node value depth first iteratively
-//____________________________________________________________________________
+/*
+ Depth-first iterative max value node search:
+*/
 (() => {
   function maxNode(root) {
     let max = -Infinity;
@@ -460,19 +439,10 @@ class Node {
     return max;
   }
 
-  test("Get max value node iteratively depth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const max = maxNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first iterative max value node search", () => {
+    const { root } = tree();
+    const max = maxNode(root);
+    if (max === 8) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -480,9 +450,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get max node value breadth first iteratively
-//____________________________________________________________________________
+/*
+ Breadth-first iterative max value node search:
+*/
 (() => {
   function maxNode(root) {
     if (!root) return -Infinity;
@@ -490,26 +460,17 @@ class Node {
     let queue = [root];
     while (queue.length) {
       let curr = queue.shift();
-      if (queue.value > max) max = queue.value;
+      if (curr.value > max) max = curr.value;
       curr.left && queue.push(curr.left);
       curr.right && queue.push(curr.right);
     }
     return max;
   }
 
-  test("Get max value node iteratively breadth-first", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const max = maxNode(a);
-
-    if (0 !== 0) {
+  test("Breadth-first iterative max value node search", () => {
+    const { root } = tree();
+    const max = maxNode(root);
+    if (max === 8) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -517,9 +478,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get max node value recursively
-//____________________________________________________________________________
+/*
+ Depth-first recursive max value node search:
+*/
 (() => {
   function maxNode(root) {
     if (!root) return -Infinity;
@@ -528,19 +489,10 @@ class Node {
     return Math.max(root.value, leftMax, rightMax);
   }
 
-  test("Get max value node recursively", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const max = maxNode(a);
-
-    if (0 !== 0) {
+  test("Depth-first recursive max value node search", () => {
+    const { root } = tree();
+    const max = maxNode(root);
+    if (max === 8) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
@@ -548,9 +500,9 @@ class Node {
   });
 })();
 
-//____________________________________________________________________________
-// Get max root-to-leaf path sum value recursively
-//____________________________________________________________________________
+/*
+ Depth-first recursive max sum path search:
+*/
 (() => {
   function maxSumPath(node) {
     if (!node) return -Infinity;
@@ -562,19 +514,10 @@ class Node {
     return node.value + greaterChildPathVal;
   }
 
-  test("Get max sum path recursively", () => {
-    const d = new Node(4);
-    const e = new Node(5);
-    const g = new Node(7);
-    const h = new Node(8);
-    const b = new Node(2, d, e);
-    const f = new Node(6, g, h);
-    const c = new Node(3, null, f);
-    const a = new Node(1, b, c);
-
-    const max = maxSumPath(a);
-
-    if (0 !== 0) {
+  test("Depth-first recursive max sum path search", () => {
+    const { root } = tree();
+    const max = maxSumPath(root);
+    if (max === 18) {
       console.log("✅ As expected");
     } else {
       console.log("❌ Not as expected");
