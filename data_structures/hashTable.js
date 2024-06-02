@@ -1,54 +1,92 @@
-// hash function
+const test = (title, callback) => {
+  console.log(` 🔹 ${title} 🔹 `);
+  callback();
+};
 
-const hash = (key, tableSize) => {
-  let str = "";
-  for(let i=0; i<key.length; ++i){
-    str+=key.charCodeAt(i);
-  }
-  return Number(str) % tableSize;
-
-}
-
-// implementation using Map and Array
-
-class HashTable {
-    constructor(size){
+/*
+ Hash table implementation:
+*/
+(() => {
+  class HashTable {
+    constructor(size) {
       this.size = size;
       this.buckets = Array(this.size);
-      for(let i=0; i<this.size; ++i){
-       this.buckets[i] = new Map();
+      for (let i = 0; i < this.size; ++i) {
+        this.buckets[i] = new Map();
       }
     }
-    add(key, value){
-     const hashed = hash(key, this.size);
-     console.log(`added ${key}: ${value}`);
-     this.buckets[hashed].set(key, value);
+
+    hash(key, tableSize) {
+      let str = "";
+      for (let i = 0; i < key.length; ++i) {
+        str += key.charCodeAt(i);
+      }
+      return Number(str) % tableSize;
     }
-    remove(key){
-      const hashed = hash(key, this.size);
-      if (this.buckets[hashed].has(key)) {
-        console.log(`deleted ${key}: ${this.buckets[hashed].get(key)}`);
-        this.buckets[hashed].delete(key)
+
+    add(key, value) {
+      const hashNum = this.hash(key, this.size);
+      this.buckets[hashNum].set(key, value);
+    }
+
+    remove(key) {
+      const hashNum = this.hash(key, this.size);
+      if (this.buckets[hashNum].has(key)) {
+        this.buckets[hashNum].delete(key);
         return;
       }
-      console.log(`${key} not found`);
+      return `${key} not found`;
     }
-    find(key){
-       const hashed = hash(key, this.size); 
-       if(this.buckets[hashed].has(key)){
-        console.log(`found ${key}: ${this.buckets[hashed].get(key)}`);
-        return
-       }
-       console.log(`${key} not found`)
-    }
-}
 
-let hashTable = new HashTable(30);
-hashTable.add("keech", "dj techy hacky")
-hashTable.add("poozh", "hello poozh kiss u");
-hashTable.add("cecee", "ploppers");
-hashTable.add("nebojs", "feefee");
-hashTable.add("keech", "ploppers");
-hashTable.add("daredev", "nostradamus");
-hashTable.remove("daredev")
-console.log(hashTable)
+    find(key) {
+      const hashNum = this.hash(key, this.size);
+      if (!this.buckets[hashNum].has(key)) {
+        return `${key} not found`;
+      }
+      return this.buckets[hashNum];
+    }
+  }
+
+  test("Hash method works", () => {
+    const hashTable = new HashTable(30);
+    const hash = hashTable.hash("poozh", 30);
+    if (hash === 14) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
+
+  test("Hash table adds and finds added entry", () => {
+    const hashTable = new HashTable(30);
+    hashTable.add("poozh", "secret");
+    const findKey = hashTable.find("poozh");
+    if (findKey) {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
+
+  test("Hash table removes an entry", () => {
+    const hashTable = new HashTable(30);
+    hashTable.add("poozh", "secret");
+    hashTable.remove("poozh");
+    const findKey = hashTable.find("poozh");
+    if (findKey === "poozh not found") {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
+
+  test("Hash table removes a non-existing entry", () => {
+    const hashTable = new HashTable(30);
+    const removeKey = hashTable.remove("poozh");
+    if (removeKey === "poozh not found") {
+      console.log("✅ As expected");
+    } else {
+      console.log("❌ Not as expected");
+    }
+  });
+})();
