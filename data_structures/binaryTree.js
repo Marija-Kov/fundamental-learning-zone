@@ -501,7 +501,11 @@ function tree() {
 })();
 
 /*
- Depth-first recursive max sum path search:
+ Depth-first recursive max sum root-leaf path search:
+ ** The approach below will work only if we know that the node values
+    are increasing from the root towards the leaves without exception.
+    In case we can't predict the values of nodes, we can only check every
+    possible path, memoize and compare.
 */
 (() => {
   function maxSumPath(node) {
@@ -514,7 +518,7 @@ function tree() {
     return node.value + greaterChildPathVal;
   }
 
-  test("Depth-first recursive max sum path search", () => {
+  test("Depth-first recursive max sum root-leaf path search", () => {
     const { root } = tree();
     const max = maxSumPath(root);
     if (max === 18) {
