@@ -74,4 +74,21 @@ Interface (type) - _which_ requests an object can respond to;
 - Since a _class_ defines the operations an object can perform, it also defines its _type_.
 
 - When an object is an instance of a class, it means that it supports the interface defined by the class;
+- But when a message is sent, what is checked is the type of the receiver i.e. whether it implements the message.
+
+Class inheritance defines an object's implementation in terms of another object's implementation.
+Interface inheritance (or subtyping) describes when an object can be used in place of another.
+
+- Most languages don't make/support a difference between interface and implementation inheritance, but people make distinction in practice. Many design patterns depend on this distinction;
+
+#### Programming to an Interface, not an Implementation
+
+Dependency inversion
+
+#### Inheritance vs Composition
+
+Inheritance - white box reuse - for clear hierarchical relationship between classes; defined statically at compile time;
+Composition - black box reuse (does not break encapsulation) - flexible, dynamic relationships between objects;
+
+
 
