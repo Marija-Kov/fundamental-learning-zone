@@ -1,4 +1,4 @@
-
+## Design Patterns: Elements of Reusable Object Oriented Software
 
 - A pattern has 4 essential elements: name, problem, solution, consequences (tradeoffs);
 
@@ -90,5 +90,26 @@ Dependency inversion
 Inheritance - white box reuse - for clear hierarchical relationship between classes; defined statically at compile time;
 Composition - black box reuse (does not break encapsulation) - flexible, dynamic relationships between objects;
 
+- Should always favour composition over inheritance to avoid descendants seeing the ascendants inner business as well as to avoid tight coupling with the descendants messing with ascendants too much;
 
+- Interface over implementation inheritance
+
+#### Delegation
+
+- Why/when would an object want to delegate a request to another object? Because it's doing too much already? To make sure it's handled more specifically? For better organisation?
+
+- Delegation -> flexibility -> complexity;
+
+- State, strategy and visitor patterns depend on delegation
+
+Avoid these to dodge redesign:
+ 
+ 1. creating an object with class explicitly -> use abstract factory;
+ 2. dependence on specific operations -> use chain of responsibility;
+ 3. dependence on software platforms -> use abstract factory,bridge;
+ 4. dependence on object representation/implementation;  clients that know a lot about an object will need to be changed every time the object changes -> use abstract factory, bridge, memento, proxy;
+ 5. algorithmic dependencies; algorithms that are likely to change should be isolated -> use builder, iterator, strategy, template method, visitor;
+ 6. tight coupling; tightly coupled classes are hard to reuse in isolation -> use abstract factory, bridge, chain of responsibility, command, facade, mediator, observer;
+ 7. extending functionality by subclassing; requires in-depth understanding of the parent class and gets messy fast -> use bridge, chain of responsibility, composite, decorator, observer, strategy;
+ 8. Inability to alter classes conveniently -> use adapter, decorator, visitor;
 

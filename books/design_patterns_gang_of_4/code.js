@@ -80,3 +80,18 @@ class Cat extends Animal {
     console.log(`${this.name} meows.`);
   }
 }
+
+/*
+ Create an object indirectly with class:
+*/
+
+class A {
+  constructor(){
+  }
+}
+
+function createInstanceA(){
+  return new A;
+}
+
+const a = createInstanceA()
