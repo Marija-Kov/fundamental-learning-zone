@@ -85,11 +85,13 @@ class Cat extends Animal {
  Create an object indirectly with class:
 */
 
+// Serves as a blueprint:
 class A {
   constructor(){
   }
 }
 
+// Does the actual work:
 function createInstanceA(){
   return new A;
 }

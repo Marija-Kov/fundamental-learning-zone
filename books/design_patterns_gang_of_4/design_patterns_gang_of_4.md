@@ -8,14 +8,14 @@
 
 - Classes can be decoupled by establishing protocols, example: MVC;
 
-* Patterns that sound familiar, like something I've already used or otherwise easy to wrap my head around:
+* Patterns that sound familiar, like something I've already used or otherwise easy(ish) to wrap my head around:
 
   - Bridge - decouple abstraction from its implementation
   - Decorator - extend functionality dynamically
   - Facade - higher level interface that is easier to use
   - Mediator - prevents objects from referring to each other explicitly
   - Observer - one-to-many dependency that notifies all objects when one object changes (state container)
-  - Prototype - 
+  - Prototype - something used to create objects
   - Proxy - placeholder for an object
   - Singleton - make sure there's only one instance
 
@@ -79,7 +79,7 @@ Interface (type) - _which_ requests an object can respond to;
 Class inheritance defines an object's implementation in terms of another object's implementation.
 Interface inheritance (or subtyping) describes when an object can be used in place of another.
 
-- Most languages don't make/support a difference between interface and implementation inheritance, but people make distinction in practice. Many design patterns depend on this distinction;
+- Most languages (including JavaScript) don't make/support a difference between interface and implementation inheritance, but people make distinction in practice. Many design patterns depend on this distinction;
 
 #### Programming to an Interface, not an Implementation
 
@@ -92,7 +92,9 @@ Composition - black box reuse (does not break encapsulation) - flexible, dynamic
 
 - Should always favour composition over inheritance to avoid descendants seeing the ascendants inner business as well as to avoid tight coupling with the descendants messing with ascendants too much;
 
-- Interface over implementation inheritance
+- Interface (abstract class, method) over implementation (concrete class, method) inheritance; concrete - implemented, abstract - not implemented.
+
+* JavaScript is different compared to Java and C# in that it does not have the same formal distinction between abstract classes and interfaces.
 
 #### Delegation
 
@@ -106,10 +108,54 @@ Avoid these to dodge redesign:
  
  1. creating an object with class explicitly -> use abstract factory;
  2. dependence on specific operations -> use chain of responsibility;
- 3. dependence on software platforms -> use abstract factory,bridge;
+ 3. dependence on software platforms -> use abstract factory, bridge;
  4. dependence on object representation/implementation;  clients that know a lot about an object will need to be changed every time the object changes -> use abstract factory, bridge, memento, proxy;
  5. algorithmic dependencies; algorithms that are likely to change should be isolated -> use builder, iterator, strategy, template method, visitor;
  6. tight coupling; tightly coupled classes are hard to reuse in isolation -> use abstract factory, bridge, chain of responsibility, command, facade, mediator, observer;
  7. extending functionality by subclassing; requires in-depth understanding of the parent class and gets messy fast -> use bridge, chain of responsibility, composite, decorator, observer, strategy;
  8. Inability to alter classes conveniently -> use adapter, decorator, visitor;
+
+- Importance of design patterns in application programs, toolkits and frameworks;
+
+#### How to select design patterns?
+
+Consider:
+
+1. how they solve problems;
+2. intent;
+3. how patterns interrelate;
+4. which patterns serve similar purpose;
+5. the cause of redesign;
+6. what should be variable in your design;
+
+
+### Design patterns catalogue
+
+#### Abstract Factory
+
+ - Product is returned immediately
+
+#### Builder
+
+- Product is built in steps
+
+- Often bulds a composite
+
+#### Factory Method 
+
+- concrete
+
+#### Prototype
+
+- Competing with Abstract factory in a way
+- Goes well with Composite and Decorator
+
+#### Singleton
+
+- One instance with global point access
+- reduced name space
+- protected constructor
+
+
+
 
