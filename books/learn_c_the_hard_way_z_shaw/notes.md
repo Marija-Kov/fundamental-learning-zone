@@ -22,3 +22,9 @@
 - Create and run Makefile, learn ```make``` command;
 - Read ```man make```; there are variants of ```make```;
 - https://makefiletutorial.com/
+
+### Exercise 3
+
+- Find all printf escape codes;
+- Break ex3 in as many ways as you can;
+- REad ```man 3 printf```

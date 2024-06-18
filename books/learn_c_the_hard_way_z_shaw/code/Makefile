@@ -1,11 +1,7 @@
-all: one two three
+CFLAGS=-Wall -g
 
-one:
-	touch one
-two:
-	touch two
-three:
-	touch three
+all: ex1 ex3
 
 clean:
-	rm -f one two three
+	rm -f ex1
+	rm -f ex3
