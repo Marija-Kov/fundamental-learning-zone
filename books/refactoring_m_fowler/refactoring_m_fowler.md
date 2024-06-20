@@ -112,6 +112,13 @@ To extract (a variable) is to add a name to an expression.
 
 - Ensure that the extracted/inlined expression has no side effects.
 
+### Change function declaration
+
+_Functions represent the joints in our software systems_
+
+On decoupling: _Reducing how much modules need to know about each other helps reduce how much I need to put into my brain when I change something_
+
+- Simple mechanics (simple renaming) vs migration mechanics (adding a new function then gradually removing the old one);
 
 
 
