@@ -104,6 +104,16 @@ _Optimizing compilers often work better with shorter functions which can be cach
 
 Good naming - self-documenting code.
 
+### Extract variable, inverse: Inline variable
+
+To extract (a variable) is to add a name to an expression.
+
+- If an expression is relevant to a specific function, it can be extracted as a variable. If it should be available to more functions / modules, it should be extracted as a function.
+
+- Ensure that the extracted/inlined expression has no side effects.
+
+
+
 
 
 
