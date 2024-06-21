@@ -31,6 +31,8 @@
 
 ### Exercise 4
 
+#### GDB debugger
+
 - Install GDB from the source code (https://www.sourceware.org/gdb/download/) since Homebrew will not install properly on Catalina; 
 - run ```./configure --prefix=/usr/local``` and build;
 - BUT FIRST install:
@@ -56,3 +58,33 @@
 Helpful videos on how to use GDB:
 - https://www.youtube.com/watch?v=Dq8l1_-QgAc (buggy comes from here)
 - 
+
+#### LLDB debugger
+
+- https://www.youtube.com/watch?v=2GV0K9Y2MKA
+
+- start lldb and set target executable - ```lldb execname arg?```
+- run - ```r```
+- set breakpoint on line # - ```b filename.ext : #```
+                 on a function - ```b funcname(argtype?)```
+                 on a class/struct method - ```b Classname::methodname(argtype?)```
+                 inside a namespace - ```b Namespacename::methodname(argtype?)```
+
+- list breakpoints - ```br list```
+- delete a breakpoint - ```br del #```
+- delete all breakpoints - ```br del```
+
+- step over - ```n```
+- step into - ```s```
+- continue to the next breakpoint or program termination - ```c```
+
+- print variable - ```p varname```
+
+- print variables in the current frame - ```frame variable```
+
+- current frame - ```fr s```
+
+- backtrace i.e. show the call stack with current frame marked - ```bt```
+- switch to frame number - ```f #```
+
+- watch variable - ```w s v variablename```
