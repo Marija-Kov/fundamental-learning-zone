@@ -88,3 +88,43 @@ Helpful videos on how to use GDB:
 - switch to frame number - ```f #```
 
 - watch variable - ```w s v variablename```
+
+
+### Exercise 5 - Operators
+
+- The use of bitwise (assignment) operators (```|=```, ```^=```)?
+   (5)  00000101 ^
+   (9)  00001001
+ = (12) 00001100   
+
+  ~00000101 = 11111010
+  00000101 >> 2 = 00000001 
+  00000101 << 2 = 00010100 
+
+- Bitwise operators return integer values.
+
+- https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/
+
+- Array subscript operator - array index operator (```[]```) - subscript === index
+- The use of structure (de)reference (```.```, ```->```)?
+
+### Exercise 6 - Keywords and formations
+
+#### Name / identifier
+```
+  int x = 10; // x is a name and an identifier
+  printf("Value of x: %d\n", x); // x is an identifier from the compiler's perspective
+```
+
+#### enum
+
+- Compound statements?
+
+#### continue
+
+#### auto, static, extern
+- https://www.geeksforgeeks.org/storage-classes-in-c/
+
+#### double
+
+- macros
