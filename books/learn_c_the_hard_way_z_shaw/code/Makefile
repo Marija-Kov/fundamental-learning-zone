@@ -6,3 +6,6 @@ clean:
 	rm -f ex1
 	rm -f ex3
 	rm -f buggy
+	rm -f buggy2
+	rm -f ex7
+	rm -f ex8

@@ -128,3 +128,26 @@ Helpful videos on how to use GDB:
 #### double
 
 - macros
+
+### Exercise 7
+
+#### unsigned 
+Shorthand of ```unsigned int```.
+When a variable is declared as ```unsigned```, it changes the range of values that the variable can hold.
+
+For a 16 bit (short) integer:
+
+- ```int``` holds values in range -32768 - 32767
+- ```unsigned int``` holds values in range 0 - 65535
+
+- Huge numbers in C print 0.
+
+- The example below does not cause a compile error, why?
+
+```
+unsigned long universe_of_defects = -1L * 1024L * 1024L;
+```
+
+- Why can we multiply a ```char``` with an ```int```?
+
+- https://stackoverflow.com/questions/46073295/implicit-type-promotion-rules
