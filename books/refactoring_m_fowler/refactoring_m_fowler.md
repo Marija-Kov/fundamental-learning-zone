@@ -134,5 +134,7 @@ Changing data vs changing functions;
 
 - Straightforward; in cases when the variable is more widely used, use encapsulate variable;
 
+### Introduce parameter object
 
+- Prefer using a class instead of an object, it opens more possibilities.
 
