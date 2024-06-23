@@ -92,6 +92,8 @@ Helpful videos on how to use GDB:
 
 ### Exercise 5 - Operators
 
+- https://en.cppreference.com/w/c/language/expressions#Operators
+
 - The use of bitwise (assignment) operators (```|=```, ```^=```)?
    (5)  00000101 ^
    (9)  00001001
@@ -151,3 +153,8 @@ unsigned long universe_of_defects = -1L * 1024L * 1024L;
 - Why can we multiply a ```char``` with an ```int```?
 
 - https://stackoverflow.com/questions/46073295/implicit-type-promotion-rules
+
+### Exercise 8
+
+- https://en.cppreference.com/w/c/language/statements
+
