@@ -120,8 +120,19 @@ On decoupling: _Reducing how much modules need to know about each other helps re
 
 - Simple mechanics (simple renaming) vs migration mechanics (adding a new function then gradually removing the old one);
 
+### Encapsulate variable
 
+Changing data vs changing functions;
 
+- Moving data around is easier when it's encapsulated _by routing all their access to functions_.
+
+- Encapsulation _provides a clear point to monitor changes and use of the data_.
+
+- _what to encapsulate—and how to do it—depends on the way the data is being used and the changes_
+
+### Rename variable
+
+- Straightforward; in cases when the variable is more widely used, use encapsulate variable;
 
 
 
