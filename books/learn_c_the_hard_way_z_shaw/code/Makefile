@@ -9,3 +9,4 @@ clean:
 	rm -f buggy2
 	rm -f ex7
 	rm -f ex8
+	rm -f ex9

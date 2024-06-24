@@ -158,3 +158,6 @@ unsigned long universe_of_defects = -1L * 1024L * 1024L;
 
 - https://en.cppreference.com/w/c/language/statements
 
+### Exercise 9
+
+- https://en.cppreference.com/w/c/language/while
