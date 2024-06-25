@@ -161,3 +161,20 @@ unsigned long universe_of_defects = -1L * 1024L * 1024L;
 ### Exercise 9
 
 - https://en.cppreference.com/w/c/language/while
+
+### Exercise 10
+
+- Switch statement in C is a jump table, not quite like if-else. Run the program in the debugger and see how it doesn't walk through every case to find the right one (like a series of if-else statements would).
+
+- The compiler marks the place in the program where the switch statement starts, then it translates all the case blocks into a location in the program (number);
+
+- If there's no ```break```, the program 'falls through';
+
+- Jump tables require a contiguous block of memory to store the jump addresses.
+
+
+- https://github.com/zedshaw/learn-c-the-hard-way-lectures/blob/master/ex10/lecture.md
+
+
+
+
