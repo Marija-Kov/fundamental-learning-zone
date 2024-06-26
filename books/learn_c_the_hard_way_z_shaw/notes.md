@@ -176,5 +176,40 @@ unsigned long universe_of_defects = -1L * 1024L * 1024L;
 - https://github.com/zedshaw/learn-c-the-hard-way-lectures/blob/master/ex10/lecture.md
 
 
+### Exercise 11
+
+- If we don't assign '\0' to the last byte in an array of chars, it will print random unexpected characters.
+
+ ```
+ int numbers[4] = { 'a', 'a' }; 
+ printf("%d %d %d %d\n",
+         numbers[0], numbers[1], numbers[2], numbers[3]);
+ // prints: 97 97 0 0 
+
+ char name[5] = { 'a', 'a', 1, 'a', '\0'};
+ printf(" %c %c %c %c\n",
+         name[0], name[1], name[2], name[3]);
+ // prints: a a <empty space> a 
+
+ printf("%s\n", name);
+ // prints: aaa
+
+ char name[5] = { 'a', 'a', '\0', 'a',};
+ printf("%s\n", name);
+ // prints: aa
+ 
+ printf("%c %c %c %c\n",
+        name[0], name[1], name[2], name[3]);
+ // prints: a a <empty space> a
+
+ printf("%c %c %d %c\n",
+        name[0], name[1], name[2], name[3]);
+ // prints: a a 0 a
+
+ char *namealt = "Zed";
+ printf("%c %d %c %c\n",
+        namealt[0], namealt[1], namealt[2], namealt[3]);
+ // prints: Z 101 d
 
 
+ ```
