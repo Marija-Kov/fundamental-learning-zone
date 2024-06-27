@@ -12,3 +12,4 @@ clean:
 	rm -f ex9
 	rm -f ex10
 	rm -f ex11
+	rm -f ex12

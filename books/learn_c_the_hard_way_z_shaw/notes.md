@@ -213,3 +213,16 @@ unsigned long universe_of_defects = -1L * 1024L * 1024L;
 
 
  ```
+ - https://github.com/zedshaw/learn-c-the-hard-way-lectures/blob/master/ex11/ex11.c
+
+ ## Exercise 12
+
+ - To C, char abc1[] = "abc" and char abc2[] = { 'a', 'b', 'c' } are the same identifiers i.e. identical methods of creating an array (although "abc" is 1B bigger because of the implicit null terminator).
+
+```
+int areas[] = { 10, 12, 13, 14, 20 };
+printf("%d, %d.\n", areas[0], areas[10]);
+// prints: 10, <random integer>
+// compiler als says that int areas has already been declared - which means that C implicitly tries to allocate memory to values out of range?
+```
+
