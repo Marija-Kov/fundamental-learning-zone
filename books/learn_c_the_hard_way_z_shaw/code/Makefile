@@ -14,4 +14,5 @@ clean:
 	rm -f ex11
 	rm -f ex12
 	rm -f ex13
+	rm -f ex14
 

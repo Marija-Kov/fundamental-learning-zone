@@ -226,3 +226,9 @@ printf("%d, %d.\n", areas[0], areas[10]);
 // compiler als says that int areas has already been declared - which means that C implicitly tries to allocate memory to values out of range?
 ```
 
+## Exercise 14
+
+- https://en.cppreference.com/w/c/language/functions
+- https://jameshfisher.com/2016/11/27/c-k-and-r/
+
+
