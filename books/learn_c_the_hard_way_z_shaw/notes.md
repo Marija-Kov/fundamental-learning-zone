@@ -231,4 +231,37 @@ printf("%d, %d.\n", areas[0], areas[10]);
 - https://en.cppreference.com/w/c/language/functions
 - https://jameshfisher.com/2016/11/27/c-k-and-r/
 
+## Exercise 15 
+
+- Use arrays to access memory instead of pointers. Only use pointers for optimisation if you absolutely have to.
+
+- C lets us work with pointers like with arrays, but they are not the same thing.
+```
+char *name = "keech";
+*name == name[0];
+*(name + 1) == name[1];
+```
+
+```
+int a = 23, b = 43, c = 12, d = 89, e = 2;
+int *ages[] = { &a, &b, &c, &d, &e };
+int *cur_age = ages;
+// compile error: incompatible pointer types initializing 'int *' with an expression of type 'int *[5]'
+// we're assigning an array of pointers to a pointer
+
+// this is a correct way to initialize a new array of pointers with the value of another array of pointers:
+
+int **cur_age = ages;
+
+// using it as an argument:
+
+int somefunction(int **arg) {
+       //does something
+}
+
+somefunction(cur_age);
+// '*' markers are only used in declaration
+
+```
+
 
