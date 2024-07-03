@@ -264,4 +264,44 @@ somefunction(cur_age);
 
 ```
 
+## Exercise 16
 
+```assert(<something>)``` is a macro, a preprocessor directive. Macros are like functions that are invoked at compile time, as opposed to runtime.
+
+How macro is defined:
+
+```
+#define <macro/directive> (<substitute value/expression>)
+```
+
+```
+#define PI 3.14159
+
+#define SQUARE(x) ((x) * (x))
+```
+
+- In C, "dereferencing" is accessing the value stored at the memory address that the pointer is pointing to:
+*ptr == value of ptr
+as opposed to "referencing": 
+&ptr == address that the pointer is pointing to;
+
+(*ptr).member == the value of member of the struct that ptr is pointing to;
+
+ptr->member == shorthand of above;
+
+- Pointer dereference is mostly used to assign values to struct members.
+
+```
+struct Person *Function_name()
+struct Person * Function_name()
+struct Person* Function_name()
+```
+all of the three above do the same thing.
+
+- Struct is a compound data type.
+
+- ```leak (pid)``` - log memory leaks in process (pid)
+
+- Creating struct on the stack so it can be memory-manages automatically when we use malloc, we're storing things on the heap. That requires manual memory management.
+
+- ex16 and ex16a return the same results although in ex16, the struct is stored on the heap and the memory is (de)allocated manually using libraries. In ex16a, the struct is created on the stack and released automatically.
