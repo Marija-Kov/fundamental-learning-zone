@@ -305,3 +305,38 @@ all of the three above do the same thing.
 - Creating struct on the stack so it can be memory-manages automatically when we use malloc, we're storing things on the heap. That requires manual memory management.
 
 - ex16 and ex16a return the same results although in ex16, the struct is stored on the heap and the memory is (de)allocated manually using libraries. In ex16a, the struct is created on the stack and released automatically.
+
+## Exercise 17
+
+_If you get a block of memory from malloc, and have that pointer on the stack, then when the function exits the pointer will get popped off and lost._
+
+_If you take a pointer to something on the stack, and then pass or return it from your function, then the function receiving it will segmentation fault (segfault), because the actual data will get popped off and disappear. You’ll be pointing at dead space._
+
+This command on program ex17: 
+```
+./ex17 keechdb s 07 xDgCtuYgWDRJxceYPPjdPPuptHzqjdixbVBWZDFyWSdQdequCJLNXBEmJdjvpiwMZPRpENixZhEgavKjTZbmxbALYLAtASKbauUtAjZVeGUKbbxPwJhrVRCafXyxqvmmdTWdeiPcTXkAmfxKQgpBdmiGzfqGVQaGPtcMgVBKyJRQTWebgjjHSHUeHgXHruUMGDTvjBuzLheadaccTfZaAUKxpjZZSTdRSrTAiMKrdLQLWmJLtTVPPavUQkGZYVwafFmzZMjaCBUCvRiFaZAckHzdZmyavTNNTFtGPjFYtCVGMMSypqFUjbmyekbheXSYaECCTdTgbkJQKRyRNMZbDtyuegkgfqTvKJiMZYDehXndYHzLcLaMXgZySQDLuMFcnetPNWFSGmeERSSvGTxVfEDQYMMUHDvqdaCyLfhUByjcNCXbgTpZCJGxxuMbGXbqyFHhNYPSGxPjaMZCAuBQgBmnveDbyXfSiKVqMiurzzxPBEKckMJXBdnpgNAezrMGvEBdNanReJHmLSRTCAEZhttqiZctEgMVEuENrABhpJHKrLThwMjmqaNZMSRAczUqVWbuwZDbDNFaRkhPZSiPWytw chook@mail.yu
+```
+
+will successfully set a row in the database. Max length for name and email is 512 bytes and the length of the random string passed as name argument is 600.
+Upon query, it will return this:
+```
+7 xDgCtuYgWDRJxceYPPjdPPuptHzqjdixbVBWZDFyWSdQdequCJLNXBEmJdjvpiwMZPRpENixZhEgavKjTZbmxbALYLAtASKbauUtAjZVeGUKbbxPwJhrVRCafXyxqvmmdTWdeiPcTXkAmfxKQgpBdmiGzfqGVQaGPtcMgVBKyJRQTWebgjjHSHUeHgXHruUMGDTvjBuzLheadaccTfZaAUKxpjZZSTdRSrTAiMKrdLQLWmJLtTVPPavUQkGZYVwafFmzZMjaCBUCvRiFaZAckHzdZmyavTNNTFtGPjFYtCVGMMSypqFUjbmyekbheXSYaECCTdTgbkJQKRyRNMZbDtyuegkgfqTvKJiMZYDehXndYHzLcLaMXgZySQDLuMFcnetPNWFSGmeERSSvGTxVfEDQYMMUHDvqdaCyLfhUByjcNCXbgTpZCJGxxuMbGXbqyFHhNYPSGxPjaMZCAuBQgBmnveDbyXfSiKVqMiurzzxPBEKckMJXBdnpgNAezrMGchook@mail.yu chook@mail.yu
+```
+the name parameter was cut down to 512 characters but then the email argument string was concatenated to it unexpectedly. That's the flaw in ```strncpy``` method.
+
+```
+ char *cropped(char *str, int max)
+  {
+    char cropped_str[max]; // NO.
+    // use malloc instead and also remember to free the memory!
+    int i;
+    for (i = 0; i < max - 1; i++) {
+      cropped_str[i] = str[i];
+    }
+    cropped_str[max - 1] = '\0';
+    return cropped_str;
+  }    
+```
+The function above returns a pointer to a local variable and is a common cause of undefined behaviour. When the function returns, the cropped_str array goes out of scope, and the pointer to that memory location becomes invalid.
+
+
