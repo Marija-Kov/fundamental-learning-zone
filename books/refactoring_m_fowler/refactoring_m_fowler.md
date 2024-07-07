@@ -138,3 +138,7 @@ Changing data vs changing functions;
 
 - Prefer using a class instead of an object, it opens more possibilities.
 
+## Combine functions into class or transform
+
+- Prefer using former over the latter for flexibility.
+
