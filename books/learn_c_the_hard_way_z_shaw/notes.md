@@ -339,4 +339,59 @@ the name parameter was cut down to 512 characters but then the email argument st
 ```
 The function above returns a pointer to a local variable and is a common cause of undefined behaviour. When the function returns, the cropped_str array goes out of scope, and the pointer to that memory location becomes invalid.
 
+### Extra
+
+#### Struct packing in C
+
+http://www.catb.org/esr/structure-packing/
+
+_rearranging the order of struct members in careful ways so that it saves memory_
+ 
+Basic datatypes (except chars) are _self aligned_ : laid out in memory under certain constraints to make memory access faster - it's not arbitrary.  
+
+_each type except char has an alignment requirement: 2-byte shorts must start on an even address, 4-byte ints or floats must start on an address divisible by 4, and 8-byte longs or doubles must start on an address divisible by 8_
+
+ISA (Instruction set architecture) - refers to processors/their layouts.
+
+THe allocated order of static variables is not always their source order.
+
+A struct _has the pointer alignment of its widest member_. 
+
+## Exercise 18
+
+Functions in C are just pointers to some code.
+
+C does not support nested functions / function definitions by default.
+
+### Extra
+
+#### Passing bad arguments
+
+```
+typedef int (*some_cb)(int a, int b);
+
+int *some_func(some_cb cb)
+{
+  //some code
+} 
+
+int a_func()
+{
+  return 0;
+}
+
+int b_func(char *a)
+{
+  return atoi(*a);
+}
+
+char b_func()
+{
+  return 'a';
+}
+
+some_func(a_func); // this will fail silently
+some_func(b_func); // this will throw incompatible pointer types warning
+some_func(c_func); // this will throw incompatible pointer types warning
+
 
