@@ -17,6 +17,9 @@ void die(const char *message)
 
 // we define a function type and use a function pointer
 typedef int (*compare_cb)(int a, int b);
+//      int *(int *, int)
+typedef int *sorting_func (int *numbers, int count, compare_cb cmp);
+//      int *(*)          (int *,        int,       int (*)(int, int))'
 
 // this function is asking for a pointer to a function
 // of type compare_cb
@@ -43,6 +46,16 @@ int *bubble_sort(int *numbers, int count, compare_cb cmp)
 	return target;
 }
 
+int *other_sort(int *numbers, int count, compare_cb cmp)
+{
+ int *result = malloc(count * sizeof(int));
+ memcpy(result, numbers, count * sizeof(int));
+ int temp = result[0];
+ result[0] = result[count - 1];
+ result[count - 1] = temp;
+ return result;
+}
+
 int sorted_order(int a, int b)
 {
 	return a - b;
@@ -64,11 +77,13 @@ int strange_order(int a, int b)
 
 // this is a pass-through function that passes its arguments
 // to another function, prints its output and cleans up
-void test_sorting(int *numbers, int count, compare_cb cmp)
+void test_sorting(int *numbers, int count, compare_cb cmp, sorting_func sorter)
 {
 	int i = 0;
 	// passing the arguments to the sorting function
-	int *sorted = bubble_sort(numbers, count, cmp);
+	
+	int *sorted = sorter(numbers, count, cmp);
+
 	if (!sorted) {
 		die("Failed to sort as requested");
 	}
@@ -107,9 +122,10 @@ int main(int argc, char *argv[])
 	// convert each of them to int and store into memory
 	// previously allocated for that purpose.
 	
-	test_sorting(numbers, count, sorted_order);
-	test_sorting(numbers, count, reverse_order);
-	test_sorting(numbers, count, strange_order);
+	test_sorting(numbers, count, sorted_order, bubble_sort);
+	test_sorting(numbers, count, reverse_order, bubble_sort);
+	test_sorting(numbers, count, strange_order, bubble_sort);
+	test_sorting(numbers, count, NULL, other_sort);
 	free(numbers);
 
 	return 0;

@@ -394,4 +394,6 @@ some_func(a_func); // this will fail silently
 some_func(b_func); // this will throw incompatible pointer types warning
 some_func(c_func); // this will throw incompatible pointer types warning
 
-
+```
+typedef int (* somefunc)(int a, int b) // defines somefunc as a function pointer type that takes 2 ints as args 
+typedef int *somefunc(int a, int b)  // defines somefunc as a function type that takes 2 ints as args
