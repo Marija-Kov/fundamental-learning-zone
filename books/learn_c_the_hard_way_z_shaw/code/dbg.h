@@ -7,8 +7,8 @@
 #include <string.h>
 
 // Conditionally compiled macro
-#ifdef NDEBUG // if it's already defined when compilation starts
-#define debug(M, ...) // ...nothing
+#ifdef NDEBUG // when NDEBUG macro is defined, we're in non-debug/release mode
+#define debug(M, ...) //..and we don't want to replace debug() with anything at compile time
 #else
 // print error, file and line where it occurred and any extra arguments; ... --> ##__VA_ARGS__ 
 #define debug(M, ...) fprintf(stderr, "DEBUG %s: %d: "M"\n",\
