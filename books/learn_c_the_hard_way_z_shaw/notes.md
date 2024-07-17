@@ -397,3 +397,22 @@ some_func(c_func); // this will throw incompatible pointer types warning
 ```
 typedef int (* somefunc)(int a, int b) // defines somefunc as a function pointer type that takes 2 ints as args 
 typedef int *somefunc(int a, int b)  // defines somefunc as a function type that takes 2 ints as args
+
+## Exercise 19
+
+### Zed's Debug Macros
+
+- defend against using the same file twice
+
+
+#### clean errno
+
+- What makes errno (potentially) unsafe?
+
+```
+#define log_err(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) "M"\n",\
+  __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)               
+```
+- Preprocessor replaces log_err with fprintf. It also knows what to do with M (we instucted it) and variadic arguments (...). It will also give us other values (__FILE__, __LINE__, the return value of clean_errno()) that we asked for.
+
+- Some values like __FILE__ and __LINE__ are only available as preprocessor macros which is why macros have no alternative.

@@ -20,4 +20,5 @@ clean:
 	rm -f ex16a
 	rm -f ex17
 	rm -f ex18
+	rm -f ex19
 
