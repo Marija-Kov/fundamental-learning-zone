@@ -416,3 +416,22 @@ typedef int *somefunc(int a, int b)  // defines somefunc as a function type that
 - Preprocessor replaces log_err with fprintf. It also knows what to do with M (we instucted it) and variadic arguments (...). It will also give us other values (__FILE__, __LINE__, the return value of clean_errno()) that we asked for.
 
 - Some values like __FILE__ and __LINE__ are only available as preprocessor macros which is why macros have no alternative.
+
+## Exercise 20
+
+- Do not use variable after freeing the memory.
+
+```
+    free(something);
+
+    something = NULL; // this causes error
+```
+### Debug steps
+
+1. You can't debug code by just looking at it.
+2. Repeat the bug with an automated test.
+3. Run the program under a debugger and valgrind(another debugger) and lint.
+4. Find the backtrace and print out all the variables on the path.
+5. Once you fix it, add check()(macro) to prevent it.
+
+
