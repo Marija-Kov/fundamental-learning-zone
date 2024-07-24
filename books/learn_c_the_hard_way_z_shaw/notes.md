@@ -434,4 +434,21 @@ typedef int *somefunc(int a, int b)  // defines somefunc as a function type that
 4. Find the backtrace and print out all the variables on the path.
 5. Once you fix it, add check()(macro) to prevent it.
 
+#### Inspecting core dumps
+
+Set the size of the core dump for programs run in the current terminal window: ```ulimit -c unlimited```
+
+A known issue with macOS Catalina not creating core dumps.
+
+https://stackoverflow.com/questions/58844265/mac-catalina-corefile-locations/
+
+Access cores from any folder: ```cd /cores```
+
+(Check where core dump files are: ```sysctl kern.corefile```)
+
+```
+// this will crash a C program:
+int* ptr = NULL;
+*ptr = 44; // dereferencing NULL
+```
 
