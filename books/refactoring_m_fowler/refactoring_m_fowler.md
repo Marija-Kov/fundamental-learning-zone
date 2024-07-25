@@ -142,3 +142,7 @@ Changing data vs changing functions;
 
 - Prefer using former over the latter for flexibility.
 
+## Encapsulate Collection
+
+Basically, it's better to access a collection (array etc) using a designated method and create copies within those methods to avoid accidental modification.
+
