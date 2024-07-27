@@ -451,4 +451,40 @@ Access cores from any folder: ```cd /cores```
 int* ptr = NULL;
 *ptr = 44; // dereferencing NULL
 ```
+## Exercise 21
+
+- "Fast" integer types are aligned in memory in a way that allows for more efficient memory access.
+
+- unary, binary, ternary and prefix operators
+
+### Size Types
+
+- N - The least number of bits that a size type can hold. Possible values for N: 8, 16, 32 or 64.
+
+```<u>int_least(N)_t``` - the smallest <unsigned> int type able to hold at least N bit;
+```<U>INT_LEAST(N)_MAX/MIN``` - <unsigned> max/min value of <u>int_least(N)_t;
+
+```<u>int_fast(N)_t``` - the fastest <unsigned> size type
+```<U>INT_FAST(N)_MAX/MIN``` - <unsigned> max value 
+
+```<u>intmax_t``` - largest possible <unsigned> number on the system
+```<U>INTMAX_MAX/MIN``` - <unsigned> max/min value of the largest number on the system
+
+```<u>intptr_t``` - <unsigned> integer large enough to hold a pointer
+```<U>INTPTR_MAX/MIN``` - max/min value of integer large enough to hold a pointer
+
+```ptrdiff_t``` - difference in size of two pointers
+```PTRDIFF_MAX/MIN``` - min/max difference in size of two pointers
+
+```size_t```
+```SIZE_MAX``` - max of size_t 
+
+- Why do we have all these? For safety, memory and time efficiency.
+
+- The all-caps names are standard C library macros. 
+- The default value for _MIN macros - with the exception of ptr ones - is 0. INTPTR always has to be large enough to hold a pointer. 
+- The default value for _MAX macros varies depending on N: for 16 - 0xFFFF, 32 - 0xFFFFFFFF, 64 - 0xFFFFFFFFFFFFFFFF (the number of Fs is always N/4)
+
+Why do we have ptrdiff_t and why can't we use intptr_t instead?
+ - It's designed to handle overflows in results when performing pointer arithmetic, among other things. intptr_t does not deal with overflows.
 
