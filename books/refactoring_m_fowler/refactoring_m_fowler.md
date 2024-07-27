@@ -146,3 +146,7 @@ Changing data vs changing functions;
 
 Basically, it's better to access a collection (array etc) using a designated method and create copies within those methods to avoid accidental modification.
 
+## Replace primitive with object
+
+- Whenever you need to do something other than printing with a primitive, turn it into a class.
+
