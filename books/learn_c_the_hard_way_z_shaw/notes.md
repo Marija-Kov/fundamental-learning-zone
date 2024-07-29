@@ -395,8 +395,8 @@ some_func(b_func); // this will throw incompatible pointer types warning
 some_func(c_func); // this will throw incompatible pointer types warning
 
 ```
-typedef int (* somefunc)(int a, int b) // defines somefunc as a function pointer type that takes 2 ints as args 
-typedef int *somefunc(int a, int b)  // defines somefunc as a function type that takes 2 ints as args
+typedef int (* somefunc)(int a, int b) // defines somefunc as a function pointer type that takes 2 ints as args and returns an integer;
+typedef int *somefunc(int a, int b)  // defines somefunc as a function type that takes 2 ints as args and returns a pointer to integer; 
 
 ## Exercise 19
 
@@ -488,3 +488,43 @@ int* ptr = NULL;
 Why do we have ptrdiff_t and why can't we use intptr_t instead?
  - It's designed to handle overflows in results when performing pointer arithmetic, among other things. intptr_t does not deal with overflows.
 
+## Exercise 22
+
+- ```const``` is an alternative for ```define```, both create a constant variable.
+
+- Passing a variable to a function that does something with it won't change it.
+- In order to change the value of a variable in a function, the function will need to have the pointer to the variable.
+
+To avoid stack-related bugs:
+1) do not shadow a variable
+2) avoid using too many globals - use accessor functions for globals
+3) when in doubt, use malloc
+4) don't use static variables in a function
+5) avoid reusing function parameters
+
+### Extra
+
+Call by value vs. reference:
+```
+int num = 5;
+
+void icallbyvalue(int n)
+{
+ n++; 
+ printf("%d\n", n); // should be 6
+}
+
+icallbyvalue(num);
+
+printf("%d\n", num); // prints 5
+
+void icallbyreference(int *n)
+{
+ *n = *n + 1;
+ printf("%d\n", n);
+}
+
+icallbyreference(&num);
+
+printf("%d\n", num); // prints 6
+```
