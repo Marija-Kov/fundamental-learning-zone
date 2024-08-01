@@ -153,3 +153,7 @@ Basically, it's better to access a collection (array etc) using a designated met
 ## Replace Temp With Query
 
 - A variable is suitable for this refactoring only if it's calculated once and just read afterwards. 
+
+## Extract Class
+
+- If a class contains methods that don't make sense without each other, extract them into a class.
