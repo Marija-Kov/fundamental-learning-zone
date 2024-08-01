@@ -528,3 +528,7 @@ icallbyreference(&num);
 
 printf("%d\n", num); // prints 6
 ```
+
+## Exercise 23
+
+- Duff's device takes advantage of loose specifics of the switch statement to chunk up loop iterations so that the program runs faster.
