@@ -532,3 +532,46 @@ printf("%d\n", num); // prints 6
 ## Exercise 23
 
 - Duff's device takes advantage of loose specifics of the switch statement to chunk up loop iterations so that the program runs faster.
+
+
+## Exercise 24
+
+In this situation:
+
+```
+ 29   printf("What's your First Name? ");  
+ 30   in = fgets(you.first_name, MAX_DATA - 1, stdin);
+ 31   check(in != NULL, "Failed to read first name.");
+ 32                                      
+ 33   printf("What's your last name? "); 
+ 34   in = fgets(you.last_name, MAX_DATA - 1, stdin); 
+ 35   check(in != NULL, "Failed to read last name."); 
+ 36
+ 37 printf("How old are you? ");  
+```
+
+if the input for the first name is too large, the excess will be grabbed/read by the next fgets function.
+
+```
+cc -Wall -g    ex24.c   -o ex24
+What's your First Name? tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+```
+and on enter, we get to this:
+```
+What's your last name? How old are you?
+```
+which means that fgets on line 34 has been run with the excess data not processed by fgets on line 30. 
+
+The result will be:
+```
+First Name: ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttLast Name: tttttttttttttttttttttttt
+Age: ...
+```
+ 
+Notice how the enter key is eaten.
+
+- fgets should be used instead of fscanf, tho. fgets, NOT gets.
+
+
+
+
