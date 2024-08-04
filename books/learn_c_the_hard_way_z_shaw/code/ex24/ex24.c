@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "dbg.h"
+#include <stdlib.h>
 
 #define MAX_DATA 100
 
@@ -35,8 +36,14 @@ int main(int argc, char *argv[])
   check(in != NULL, "Failed to read last name.");
 
   printf("How old are you? ");
-  int rc = fscanf(stdin, "%d", &you.age);
-  check(rc > 0, "You have to enter a number.");
+  // How to make fgets do the job here?
+  // fgets needs a pointer to character
+  // you.age is an int
+  // it's easy to cast an int to char
+  char age = (char)you.age;
+ // in = fgets(age, MAX_DATA - 1, stdin);
+  int rc = fscanf(stdin, "%d", &you.age); //TODO: replace this
+  check(in > 0, "You have to enter a number.");
 
   printf("What color are your eyes:\n");
   for (i = 0; i <= OTHER_EYES; i++) {

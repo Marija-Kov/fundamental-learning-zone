@@ -2,6 +2,11 @@
 #include <string.h>
 #include "dbg.h"
 
+
+#define cases() { *to++ = *from++; case 7: *to++ = *from++; case 6: *to++ = *from++; case 5: *to++ = *from++; case 4: *to++ = *from++; case 3: *to++ = *from++; case 2: *to++ = *from++; case 1: *to++ = *from++; }
+
+#define switcher(expression, cases, n) switch (expression) { case 0: do { cases } while (--n > 0); }
+
 int valid_copy(char *data, int count, char expects)
 {
  int i = 0;
@@ -30,26 +35,7 @@ int duffs_device(char *from, char *to, int count)
  {
   int n = (count + 7) / 8;
 
-  switch (count % 8) {
-   case 0:
-    do {
-     *to++ = *from++;
-      case 7:
-       *to++ = *from++;
-      case 6:
-       *to++ = *from++;
-      case 5:
-       *to++ = *from++;
-      case 4:
-       *to++ = *from++;
-      case 3:
-       *to++ = *from++;
-      case 2:
-       *to++ = *from++;
-      case 1:
-       *to++ = *from++;
-    } while (--n > 0);
-  }
+  switcher(count % 8, cases(), n)
  }
  return count;
 }
