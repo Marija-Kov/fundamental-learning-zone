@@ -21,6 +21,35 @@ typedef struct Person {
   float income;
 } Person;
 
+char *trim(char *str)
+{
+ int strlen = 0;
+ int ws_pre = 0; //number of leading empty chars/index of the first non-empty char
+ while (str[strlen]) {
+  strlen++;
+ }
+
+ while (str[ws_pre] == ' '){
+  ws_pre++;
+ }
+ 
+ int ws_post = strlen - 1;//index of the first trailing char
+ while (str[ws_post - 1] == ' '){
+  ws_post--;
+ }
+ 
+ int i = 0;
+ int j = ws_pre;
+ for (int j = ws_pre; j < ws_post; j++) {
+  str[i] = str[j];
+  i++;
+ }  
+
+ str[i + 1] = '\0';
+
+ return str;
+}
+
 int main(int argc, char *argv[])
 {
   Person you = {.age = 0 };
@@ -30,29 +59,25 @@ int main(int argc, char *argv[])
   printf("What's your First Name? ");
   in = fgets(you.first_name, MAX_DATA - 1, stdin);
   check(in != NULL, "Failed to read first name.");
-  
+  trim(in);
+
   printf("What's your last name? ");
   in = fgets(you.last_name, MAX_DATA - 1, stdin);
   check(in != NULL, "Failed to read last name.");
+  trim(in);
 
   printf("How old are you? ");
-  // How to make fgets do the job here?
-  // fgets needs a pointer to character
-  // you.age is an int
-  // it's easy to cast an int to char
-  char age = (char)you.age;
- // in = fgets(age, MAX_DATA - 1, stdin);
-  int rc = fscanf(stdin, "%d", &you.age); //TODO: replace this
-  check(in > 0, "You have to enter a number.");
+  int rc = scanf("%d", &you.age);
+  check(rc > 0, "You have to enter a number.");
 
-  printf("What color are your eyes:\n");
+  printf("What color are your eyes:");
   for (i = 0; i <= OTHER_EYES; i++) {
-   printf("%d) %s\n", i + 1, EYE_COLOR_NAMES[i]);
+   printf("\n%d) %s", i + 1, EYE_COLOR_NAMES[i]);
   }
-  printf("> ");
+  printf("\n> ");
 
   int eyes = -1;
-  rc = fscanf(stdin, "%d", &eyes);
+  rc = scanf("%d", &eyes);
   check(rc > 0, "You have to enter a number.");
 
   you.eyes = eyes - 1;
@@ -60,16 +85,17 @@ int main(int argc, char *argv[])
       && you.eyes >= 0, "That's not an option.");
 
   printf("How much do you make an hour? ");
-  rc = fscanf(stdin, "%f", &you.income);
+  rc = scanf("%f", &you.income);
   check(rc > 0, "Enter a floating point number.");
 
-  printf("----- RESULTS -----\n");
+  printf("\n----- RESULTS -----");
 
-  printf("First Name: %s", you.first_name);
-  printf("Last Name: %s", you.last_name);
-  printf("Age: %d\n", you.age);
-  printf("Eyes: %s\n", EYE_COLOR_NAMES[you.eyes]);
-  printf("Income: %f\n", you.income);
+  printf("\nFirst Name: %s", you.first_name);
+  printf("\nLast Name: %s", you.last_name);
+  printf("\nAge: %d", you.age);
+  printf("\nEyes: %s", EYE_COLOR_NAMES[you.eyes]);
+  printf("\nIncome: %f", you.income);
+  printf("\n");
 
   return 0;
 error:
