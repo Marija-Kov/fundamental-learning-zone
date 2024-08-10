@@ -572,6 +572,23 @@ Notice how the enter key is eaten.
 
 - fgets should be used instead of fscanf, tho. fgets, NOT gets.
 
+### Extra
+
+https://www.geeksforgeeks.org/scansets-in-c/
+
+## Exercise 25
+
+Variable argument function may take any number of arguments before the ```...``` keyword.
+
+```va_start``` is the initializer function macro that runs inside vararg function and takes a list of varargs first and the last non-vararg before the ```...```;
+
+```va_arg``` function returns each vararg in the order of succession - the first call after ```va_start``` returns the first vararg in the list.
+
+```va_end``` invalidates ```va_list```, must be run in the same function as ```va_start```.
+
+Vararg functions are rarely used.
+
+
 
 
 
