@@ -588,7 +588,11 @@ Variable argument function may take any number of arguments before the ```...```
 
 Vararg functions are rarely used.
 
+## Exercise 26
 
+Working with directories in C
+
+https://pubs.opengroup.org/onlinepubs/7990989775/xsh/readdir.html
 
 
 
