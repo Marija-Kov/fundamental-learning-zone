@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "dbg.h"
+#include <string.h>
 #include <dirent.h>
+#include "dbg.h"
 /*
  Command: logfind <args> - finds all files containing every arg; 
  May take -o flag for 'or' logic in args
@@ -11,26 +12,43 @@
 
 int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
-  // Phase 1:
-  // enter a directory - get a pointer to it 
-  // print names of all files and subdrectories
-  // https://pubs.opengroup.org/onlinepubs/7990989775/xsh/readdir.html
+  // Phase 2:
+  // print names of files with a specific extension  
  struct dirent *entry;
- DIR *drptr = opendir(".");
+ DIR *drptr = opendir("../");
  check(drptr != NULL, "Could not open directory.");
- 
+  
+ // set the extension
+ char *ext = ".c\0";
+ long exl = strlen(ext);
+ int found = 0;
+ // check the last exl chars of every entry->d_name for matches with ext chars
  while(drptr) {
   entry = readdir(drptr);
   if (!entry) {
-   printf("--END--\n");
+   printf("Found %d files.\n", found);
    closedir(drptr);
    return 0;
   }
-  printf("%s\n", entry->d_name);
+  // check if the extension is matching char by char
+  long el = strlen(entry->d_name);
+  int cmatch = 0;
+  while (cmatch < exl) {
+   if (entry->d_name[el - exl + cmatch] == ext[cmatch]) {
+     cmatch++;
+   } else {
+     break;
+   }
+  }
+
+  if (cmatch == exl) {
+   printf("%s\n", entry->d_name);
+   found++;
+  }
  } 
- 
+
  int i = 1;
- for (int i = 1; i < argc; i++) {
+ for (i = 1; i < argc; i++) {
   printf("%s\n", argv[i]);
  }
 
