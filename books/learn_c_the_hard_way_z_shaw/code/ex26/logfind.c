@@ -12,8 +12,8 @@
 
 int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
-  // Phase 3:
-  // identify files (as opposed to dirs), open and close them  
+  // Phase 4:
+  // print some part of the file  
  struct dirent *entry;
  DIR *drptr = opendir(".");
  check(drptr != NULL, "Could not open directory.");
@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
  char *ext = ".c";
  long exl = strlen(ext);
  FILE *fp = NULL; // initialize file pointer
+ long argl = strlen(argv[1]); // there needs to be max length of an arg
 
  while(drptr) {
   entry = readdir(drptr);
@@ -45,6 +46,13 @@ int main(int argc, char *argv[]) {
     printf("f %s\n", entry->d_name);
     fp = fopen(entry->d_name, "r"); // how to specify an entry path other than current directory?
     check(fp != NULL, "Could not open file.");
+    char ch = fgetc(fp);
+    int i = 0;
+    for (i = 0; i < argl; ++i) { // what if the file has less chars than the arg?
+     printf("%c", ch);
+     ch = fgetc(fp);
+    }
+    printf("\n");
     int closed = fclose(fp);
     check(closed == 0, "Could not close file properly.");
    } else {
@@ -52,11 +60,6 @@ int main(int argc, char *argv[]) {
    }
   }
  } 
-
- int i = 1;
- for (i = 1; i < argc; i++) {
-  printf("%s\n", argv[i]);
- }
 
  closedir(drptr);
 
