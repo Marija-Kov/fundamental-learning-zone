@@ -12,25 +12,23 @@
 
 int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
-  // Phase 2:
-  // print names of files with a specific extension  
+  // Phase 3:
+  // identify files (as opposed to dirs), open and close them  
  struct dirent *entry;
- DIR *drptr = opendir("../");
+ DIR *drptr = opendir(".");
  check(drptr != NULL, "Could not open directory.");
-  
- // set the extension
- char *ext = ".c\0";
+ 
+ char *ext = ".c";
  long exl = strlen(ext);
- int found = 0;
- // check the last exl chars of every entry->d_name for matches with ext chars
+ FILE *fp = NULL; // initialize file pointer
+
  while(drptr) {
   entry = readdir(drptr);
   if (!entry) {
-   printf("Found %d files.\n", found);
    closedir(drptr);
    return 0;
   }
-  // check if the extension is matching char by char
+ 
   long el = strlen(entry->d_name);
   int cmatch = 0;
   while (cmatch < exl) {
@@ -42,8 +40,16 @@ int main(int argc, char *argv[]) {
   }
 
   if (cmatch == exl) {
-   printf("%s\n", entry->d_name);
-   found++;
+   // check if entry is a file (not a directory or something else)
+   if (entry->d_type == DT_REG) {
+    printf("f %s\n", entry->d_name);
+    fp = fopen(entry->d_name, "r"); // how to specify an entry path other than current directory?
+    check(fp != NULL, "Could not open file.");
+    int closed = fclose(fp);
+    check(closed == 0, "Could not close file properly.");
+   } else {
+    printf("d %s\n", entry->d_name);
+   }
   }
  } 
 
@@ -56,5 +62,7 @@ int main(int argc, char *argv[]) {
 
   return 0;
 error:
+  if (fp) fclose(fp);
+  if (drptr) closedir(drptr);
   return -1;
 }
