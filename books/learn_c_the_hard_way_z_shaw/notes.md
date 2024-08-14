@@ -594,5 +594,7 @@ Working with directories in C
 
 https://pubs.opengroup.org/onlinepubs/7990989775/xsh/readdir.html
 
+- Explore approaches to finding a string within a file.
 
+1. For every char in a stream inspect their subsequent chars while they correspond to the sequence of chars in the string until the match is found or until the end of file.
 

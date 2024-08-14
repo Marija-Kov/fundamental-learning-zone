@@ -12,10 +12,10 @@
 
 int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
-  // Phase 4:
-  // print some part of the file  
+
  struct dirent *entry;
- DIR *drptr = opendir(".");
+ char dirpath[] = "."; // ultimately, we need an absolute path to the target dir so that we can run the program from anywhere
+ DIR *drptr = opendir(dirpath);
  check(drptr != NULL, "Could not open directory.");
  
  char *ext = ".c";
@@ -31,33 +31,49 @@ int main(int argc, char *argv[]) {
   }
  
   long el = strlen(entry->d_name);
-  int cmatch = 0;
+  int cmatch = 0; // character match count
   while (cmatch < exl) {
    if (entry->d_name[el - exl + cmatch] == ext[cmatch]) {
      cmatch++;
-   } else {
-     break;
-   }
+   } else break;
   }
 
-  if (cmatch == exl) {
-   // check if entry is a file (not a directory or something else)
-   if (entry->d_type == DT_REG) {
-    printf("f %s\n", entry->d_name);
-    fp = fopen(entry->d_name, "r"); // how to specify an entry path other than current directory?
-    check(fp != NULL, "Could not open file.");
-    char ch = fgetc(fp);
-    int i = 0;
-    for (i = 0; i < argl; ++i) { // what if the file has less chars than the arg?
-     printf("%c", ch);
-     ch = fgetc(fp);
+  if (cmatch != exl) continue; 
+  if (entry->d_type != DT_REG) {
+   printf("d %s\n", entry->d_name);
+  } else {
+   printf("f %s\n", entry->d_name);
+   fp = fopen(entry->d_name, "r"); // how to specify an entry path other than current directory?
+   check(fp != NULL, "Could not open file.");
+   char ch = fgetc(fp);
+   
+   while (ch != EOF) {
+    if (ch != argv[1][0]) {
+      ch = fgetc(fp);
+      continue; 
     }
-    printf("\n");
-    int closed = fclose(fp);
-    check(closed == 0, "Could not close file properly.");
-   } else {
-    printf("d %s\n", entry->d_name);
-   }
+    printf("1/%ld match\n", argl);
+    
+    ch = fgetc(fp);
+    if (ch != argv[1][1]) {
+     ch = fgetc(fp);
+     continue;
+    }
+    printf("2/%ld match\n", argl);
+    
+    ch = fgetc(fp);
+    if (ch != argv[1][2]) {
+     ch = fgetc(fp);
+     continue;
+    }     
+    printf("3/%ld match\n", argl);
+    
+    // at this point it's certain that argv[1] is found in the file
+    printf("Found \"%s\" in %s.\n", argv[1], entry->d_name);
+    break;
+   }  
+   int closed = fclose(fp);
+   check(closed == 0, "Could not close file properly.");
   }
  } 
 
