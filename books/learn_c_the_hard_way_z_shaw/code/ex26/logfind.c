@@ -46,32 +46,28 @@ int main(int argc, char *argv[]) {
   if (entry->d_type != DT_REG) {
    printf("d %s\n", entry->d_name);
   } else {
-   printf("f %s\n", entry->d_name);
-
    fp = fopen(entry->d_name, "r");
    check(fp != NULL, "Could not open %s.", entry->d_name);
    char ch = fgetc(fp);
-   
+   int i = 0;
+   cmatch = 0; // reusing character match count
+
    while (ch != EOF) {
-    if (ch != argv[1][0]) {
-      ch = fgetc(fp);
-      continue; 
+    if (cmatch == argl) {
+     printf("Found \"%s\" in %s\n", argv[1], entry->d_name);
+     break;
     }
-
-    ch = fgetc(fp);
-    if (ch != argv[1][1]) {
-     ch = fgetc(fp);
-     continue;
-    }
-
-    ch = fgetc(fp);
-    if (ch != argv[1][2]) {
-     ch = fgetc(fp);
-     continue;
-    }     
-    // at this point it's certain that argv[1] is found in the file
-    printf("Found \"%s\" in %s.\n", argv[1], entry->d_name);
-    break;
+    for (i = 0; i < argl; i++) {
+     if (ch == argv[1][i]) {
+       ch = fgetc(fp);
+       cmatch++;
+       continue;
+     } else {
+       ch = fgetc(fp);
+       cmatch = 0;
+       break;
+     }
+    } 
    }  
    int closed = fclose(fp);
    check(closed == 0, "Could not close %s.", entry->d_name);
