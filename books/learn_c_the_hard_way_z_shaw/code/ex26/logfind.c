@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
+#include <unistd.h>
 #include "dbg.h"
 /*
  Command: logfind <args> - finds all files containing every arg; 
@@ -14,14 +15,17 @@ int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
 
  struct dirent *entry;
- char dirpath[] = "."; // ultimately, we need an absolute path to the target dir so that we can run the program from anywhere
+ char dirpath[] = "/var/log/";
  DIR *drptr = opendir(dirpath);
  check(drptr != NULL, "Could not open directory.");
  
- char *ext = ".c";
+ char *ext = ".log";
  long exl = strlen(ext);
  FILE *fp = NULL; // initialize file pointer
- long argl = strlen(argv[1]); // there needs to be max length of an arg
+ long argl = strlen(argv[1]); // TODO: there needs to be max length of an arg
+  
+ int targetdir = chdir(dirpath);
+ check(targetdir == 0, "Could not change dir.");
 
  while(drptr) {
   entry = readdir(drptr);
@@ -43,8 +47,9 @@ int main(int argc, char *argv[]) {
    printf("d %s\n", entry->d_name);
   } else {
    printf("f %s\n", entry->d_name);
-   fp = fopen(entry->d_name, "r"); // how to specify an entry path other than current directory?
-   check(fp != NULL, "Could not open file.");
+
+   fp = fopen(entry->d_name, "r");
+   check(fp != NULL, "Could not open %s.", entry->d_name);
    char ch = fgetc(fp);
    
    while (ch != EOF) {
@@ -52,28 +57,24 @@ int main(int argc, char *argv[]) {
       ch = fgetc(fp);
       continue; 
     }
-    printf("1/%ld match\n", argl);
-    
+
     ch = fgetc(fp);
     if (ch != argv[1][1]) {
      ch = fgetc(fp);
      continue;
     }
-    printf("2/%ld match\n", argl);
-    
+
     ch = fgetc(fp);
     if (ch != argv[1][2]) {
      ch = fgetc(fp);
      continue;
     }     
-    printf("3/%ld match\n", argl);
-    
     // at this point it's certain that argv[1] is found in the file
     printf("Found \"%s\" in %s.\n", argv[1], entry->d_name);
     break;
    }  
    int closed = fclose(fp);
-   check(closed == 0, "Could not close file properly.");
+   check(closed == 0, "Could not close %s.", entry->d_name);
   }
  } 
 
