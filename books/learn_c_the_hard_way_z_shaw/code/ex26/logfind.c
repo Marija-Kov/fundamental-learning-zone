@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
  check(drptr != NULL, "Could not open directory.");
  
  char *ext = ".log";
- long exl = strlen(ext);
+ long extl = strlen(ext);
  FILE *fp = NULL; // initialize file pointer
- long argl = strlen(argv[1]); // TODO: there needs to be max length of an arg
+ long argl; // TODO: there needs to be max length of an arg
   
  int targetdir = chdir(dirpath);
  check(targetdir == 0, "Could not change dir.");
@@ -36,39 +36,46 @@ int main(int argc, char *argv[]) {
  
   long el = strlen(entry->d_name);
   int cmatch = 0; // character match count
-  while (cmatch < exl) {
-   if (entry->d_name[el - exl + cmatch] == ext[cmatch]) {
+  while (cmatch < extl) {
+   if (entry->d_name[el - extl + cmatch] == ext[cmatch]) {
      cmatch++;
    } else break;
   }
-
-  if (cmatch != exl) continue; 
+  if (cmatch != extl) continue;
+ 
   if (entry->d_type != DT_REG) {
    printf("d %s\n", entry->d_name);
   } else {
    fp = fopen(entry->d_name, "r");
    check(fp != NULL, "Could not open %s.", entry->d_name);
+   printf("\nChecking %s ...", entry->d_name);
    char ch = fgetc(fp);
-   int i = 0;
    cmatch = 0; // reusing character match count
-
-   while (ch != EOF) {
-    if (cmatch == argl) {
-     printf("Found \"%s\" in %s\n", argv[1], entry->d_name);
-     break;
-    }
-    for (i = 0; i < argl; i++) {
-     if (ch == argv[1][i]) {
+   int found = 0;
+   for (int y = 1; y < argc; y++) {
+    argl = strlen(argv[y]);
+    while (ch != EOF) {
+     if (cmatch == argl) {
+      found = 1;
+      printf("\n Found \"%s\"", argv[y]);
+      break;
+     }
+     for (int i = 0; i < argl; i++) {
+      if (ch == argv[y][i]) {
        ch = fgetc(fp);
        cmatch++;
        continue;
-     } else {
+      } else {
        ch = fgetc(fp);
        cmatch = 0;
        break;
-     }
-    } 
-   }  
+      }
+     } 
+    }
+   } 
+   if (found == 0) {
+    printf("nothing.\n");
+   } else printf("\n");
    int closed = fclose(fp);
    check(closed == 0, "Could not close %s.", entry->d_name);
   }
