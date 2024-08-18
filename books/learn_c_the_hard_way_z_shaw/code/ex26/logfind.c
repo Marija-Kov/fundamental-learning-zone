@@ -2,6 +2,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <glob.h>
 #include "dbg.h"
 /*
  Command: logfind <args> - finds all files containing every arg; 
@@ -40,49 +41,26 @@ int find_args(FILE *fp, int argc, char *argv[])
    return result;
 }
 
-int match_ext(char *ext, long extl, char *name)
-{
-  long namel = strlen(name);
-  int result = 0;
-  while (result < extl) {
-   if (name[namel - extl + result] == ext[result]) {
-     result++;
-   } else break;
-  }
-  return result;
-}
-
 int main(int argc, char *argv[]) {
  check(argc >= 2, "You need at least one parameter.");
 
- struct dirent *entry;
  char dirpath[] = "/var/log/";
- DIR *dirptr = opendir(dirpath);
- check(dirptr != NULL, "Could not open directory.");
  
- char *ext = ".log";
- FILE *fp = NULL; // initialize file pointer
+ char *pat = "*.log";
+ FILE *fp = NULL;
   
  int logdir = chdir(dirpath);
  check(logdir == 0, "Could not change dir.");
-
- while(dirptr) {
-  entry = readdir(dirptr);
-  if (!entry) {
-   closedir(dirptr);
-   return 0;
-  }
-
-  long extl = strlen(ext);
-  int ext_match = match_ext(ext, extl, entry->d_name);
-  if (ext_match != extl) continue;
  
-  if (entry->d_type != DT_REG) {
-   printf("d %s\n", entry->d_name);
-  } else {
-   fp = fopen(entry->d_name, "r");
-   check(fp != NULL, "Could not open %s.", entry->d_name);
-   printf("\nChecking %s ...", entry->d_name);
+ glob_t gstruct;
+ int g = glob(pat, GLOB_ERR, NULL, &gstruct);
+ check(g == 0, "Couldn't glob.");
+ char **fname= gstruct.gl_pathv;
+
+ while(*fname) {
+   fp = fopen(*fname, "r");
+   check(fp != NULL, "Could not open %s.", *fname);
+   printf("\nChecking %s ...", *fname);
    
    int found = find_args(fp, argc, argv);
    
@@ -91,16 +69,13 @@ int main(int argc, char *argv[]) {
    } else printf("\n");
    
    int closed = fclose(fp);
-   check(closed == 0, "Could not close %s.", entry->d_name);
-  }
+   check(closed == 0, "Could not close %s.", *fname);
+   fname++;
  } 
-
- closedir(dirptr);
 
   return 0;
 error:
   if (fp) fclose(fp);
-  if (dirptr) closedir(dirptr);
   return -1;
 }
 
