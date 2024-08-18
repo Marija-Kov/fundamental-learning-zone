@@ -11,52 +11,16 @@
  They have .log extension
  */
 
-int main(int argc, char *argv[]) {
- check(argc >= 2, "You need at least one parameter.");
-
- struct dirent *entry;
- char dirpath[] = "/var/log/";
- DIR *drptr = opendir(dirpath);
- check(drptr != NULL, "Could not open directory.");
- 
- char *ext = ".log";
- long extl = strlen(ext);
- FILE *fp = NULL; // initialize file pointer
- long argl; // TODO: there needs to be max length of an arg
-  
- int targetdir = chdir(dirpath);
- check(targetdir == 0, "Could not change dir.");
-
- while(drptr) {
-  entry = readdir(drptr);
-  if (!entry) {
-   closedir(drptr);
-   return 0;
-  }
- 
-  long el = strlen(entry->d_name);
-  int cmatch = 0; // character match count
-  while (cmatch < extl) {
-   if (entry->d_name[el - extl + cmatch] == ext[cmatch]) {
-     cmatch++;
-   } else break;
-  }
-  if (cmatch != extl) continue;
- 
-  if (entry->d_type != DT_REG) {
-   printf("d %s\n", entry->d_name);
-  } else {
-   fp = fopen(entry->d_name, "r");
-   check(fp != NULL, "Could not open %s.", entry->d_name);
-   printf("\nChecking %s ...", entry->d_name);
+int find_args(FILE *fp, int argc, char *argv[])
+{
    char ch = fgetc(fp);
-   cmatch = 0; // reusing character match count
-   int found = 0;
+   int cmatch = 0;
+   int result = 0;
    for (int y = 1; y < argc; y++) {
-    argl = strlen(argv[y]);
+    int argl = strlen(argv[y]);
     while (ch != EOF) {
      if (cmatch == argl) {
-      found = 1;
+      result = 1;
       printf("\n Found \"%s\"", argv[y]);
       break;
      }
@@ -73,19 +37,70 @@ int main(int argc, char *argv[]) {
      } 
     }
    } 
+   return result;
+}
+
+int match_ext(char *ext, long extl, char *name)
+{
+  long namel = strlen(name);
+  int result = 0;
+  while (result < extl) {
+   if (name[namel - extl + result] == ext[result]) {
+     result++;
+   } else break;
+  }
+  return result;
+}
+
+int main(int argc, char *argv[]) {
+ check(argc >= 2, "You need at least one parameter.");
+
+ struct dirent *entry;
+ char dirpath[] = "/var/log/";
+ DIR *dirptr = opendir(dirpath);
+ check(dirptr != NULL, "Could not open directory.");
+ 
+ char *ext = ".log";
+ FILE *fp = NULL; // initialize file pointer
+  
+ int logdir = chdir(dirpath);
+ check(logdir == 0, "Could not change dir.");
+
+ while(dirptr) {
+  entry = readdir(dirptr);
+  if (!entry) {
+   closedir(dirptr);
+   return 0;
+  }
+
+  long extl = strlen(ext);
+  int ext_match = match_ext(ext, extl, entry->d_name);
+  if (ext_match != extl) continue;
+ 
+  if (entry->d_type != DT_REG) {
+   printf("d %s\n", entry->d_name);
+  } else {
+   fp = fopen(entry->d_name, "r");
+   check(fp != NULL, "Could not open %s.", entry->d_name);
+   printf("\nChecking %s ...", entry->d_name);
+   
+   int found = find_args(fp, argc, argv);
+   
    if (found == 0) {
     printf("nothing.\n");
    } else printf("\n");
+   
    int closed = fclose(fp);
    check(closed == 0, "Could not close %s.", entry->d_name);
   }
  } 
 
- closedir(drptr);
+ closedir(dirptr);
 
   return 0;
 error:
   if (fp) fclose(fp);
-  if (drptr) closedir(drptr);
+  if (dirptr) closedir(dirptr);
   return -1;
 }
+
