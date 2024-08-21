@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
-#include <dirent.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <glob.h>
 #include "dbg.h"
+
+#define MAX_LINE 500
 /*
  Command: logfind <args> - finds all files containing every arg; 
  May take -o flag for 'or' logic in args
@@ -14,31 +16,29 @@
 
 int find_args(FILE *fp, int argc, char *argv[])
 {
-   char ch = fgetc(fp);
-   int cmatch = 0;
+   size_t buf_size = MAX_LINE;
+   char *buf = malloc(buf_size);
+   check(buf != NULL, "Failed to malloc."); 
+   char *line = fgets(buf, MAX_LINE, fp);
    int result = 0;
-   for (int y = 1; y < argc; y++) {
-    int argl = strlen(argv[y]);
-    while (ch != EOF) {
-     if (cmatch == argl) {
+   int lnum = 0;
+   while (line != NULL) {
+    for (int i = 1; i < argc; i++) {
+     if (strstr(line, argv[i])) {
+      printf("\nFound \"%s\" at line: %d", argv[i], lnum);
       result = 1;
-      printf("\n Found \"%s\"", argv[y]);
-      break;
      }
-     for (int i = 0; i < argl; i++) {
-      if (ch == argv[y][i]) {
-       ch = fgetc(fp);
-       cmatch++;
-       continue;
-      } else {
-       ch = fgetc(fp);
-       cmatch = 0;
-       break;
-      }
-     } 
     }
-   } 
+    buf = realloc(buf, buf_size);
+    // what if realloc fails?
+    line = fgets(buf, MAX_LINE, fp);
+    lnum++;
+   }
+   free(buf);
    return result;
+error:
+   if(buf) free(buf);
+   return -1;
 }
 
 int main(int argc, char *argv[]) {
