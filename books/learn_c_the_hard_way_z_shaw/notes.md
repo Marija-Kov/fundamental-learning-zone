@@ -603,3 +603,23 @@ https://pubs.opengroup.org/onlinepubs/7990989775/xsh/readdir.html
 - Research glob patterns and using them to find files of certain types.
 
 https://c-for-dummies.com/blog/?p=4782
+
+## Exercise 27
+
+Creative vs defensive programming. Use both as needed.
+
+- Implementation phase is the time to be defensive. 
+- Don't think you can ever _eliminate_ the probability of errors if you know that they are possible. 
+
+The eight strategies:
+
+1. Never trust input;
+2. If error is _possible_, try and fix it;
+3. Fail early and openly. Favour returning an error code over aborting the process, only do the latter if there are too many errors;
+4. Document pre- and post-conditions and invariants of every parameter. Build _a contract of how your functions expect the world to be_;
+5. Prevention over documentation. If you can fix the error, documentation doesn't matter.
+6. Automate testing, validation, build, deployment, system administration, error reporting.
+7. Simplify and clarify. _Simple and dirty beats complex and clean_.
+8. Question authority periodically.
+
+
