@@ -622,4 +622,39 @@ The eight strategies:
 7. Simplify and clarify. _Simple and dirty beats complex and clean_.
 8. Question authority periodically.
 
+## Exercise 27
+
+Makefile in more depth
+
+https://www.gnu.org/software/make/
+
+```
+target: prerequisite
+<TAB>recipe
+<TAB>                 # this is an empty recipe
+```
+- Recipe is interpreted by the shell. ```make``` program does not try to understand them. This means that there can be two distinc syntaxes in a Makefile.
+
+- If any prerequisite is newer than the target, the target must be rebuilt.
+
+- Target ```clean``` (in this specific context) is an action that has no prerequisite and is not a prerequisite to any other rule.
+
+- To avoid confusion between action-targets and file-targets of the same name, we use ```.PHONY: <target>```.
+
+- ```$(wildcard <pattern>)``` - this is a function that returns a space-separated list of file names matching the pattern.
+
+- ```$(patsubst <replaced ext>, <replacing ext>, <wildcard func (return value)>)``` - this function replaces the extension in the result of the wildcard function.
+
+```
+CHARS = a b c
+    echo $(CHARS)  # passing a variable to a recipe, it will expand in shell
+
+```
+
+- ```cc -M filename.ext``` - this will trigger rebuild whenever an #included file changes in filename.ext .
+
+-  ```@echo This recipe will not echo, it will just run and log the result maybe``` 
+
+- make -s flag silences all the echoes but executes teh recipes, -n flag only echoes recipes without executing them. 
+
 
