@@ -6,13 +6,8 @@
 #include "dbg.h"
 
 #define MAX_LINE 500
-/*
- Command: logfind <args> - finds all files containing every arg; 
- May take -o flag for 'or' logic in args
-
- Logfiles are stored here: ~/var/log/
- They have .log extension
- */
+#define MAX_WORD 30
+#define MAX_ARGC 10
 
 int find_args_or(FILE *fp, int argc, char *argv[])
 {
@@ -48,10 +43,9 @@ int find_args_and(FILE *fp, int argc, char *argv[])
    check(buf != NULL, "Failed to malloc."); 
    char *line = fgets(buf, MAX_LINE, fp);
    int result = 0;
-   int match = 0;
    int lnum = 0;
    while (line != NULL) {
-    match = 0;
+    int match = 0;
     for (int i = 1; i < argc; i++) {
      if (strstr(line, argv[i])) match++;
     }
@@ -71,8 +65,44 @@ error:
    return -1;
 }
 
+int is_or(char *arg)
+{
+ if (!strcmp(arg, "-o")) return 1;
+ return 0;
+}
+
+int validate_args(int argc, char *argv[])
+{
+ check(argc >= 2, "USAGE: ./logfind arg1 arg2...");
+
+ int isor = is_or(argv[1]);
+ if (isor) {
+  check(argv[2], "USAGE: ./logfind -o arg1 arg2...");
+ }
+
+ check(argc <= MAX_ARGC + 1, "You can enter %d args at most.", MAX_ARGC);
+ 
+ int i = 1; // argv[1] might be '-o' flag and that won't be an issue greater than one unnecessary iteration
+ int too_long = 0;
+ for (i = 1; i < argc; i++) {
+  if (strlen(argv[i]) > MAX_WORD) too_long = 1;
+ }
+ if (too_long) { 
+   log_info("Some args will be skipped for being too long. Max length is %d chars.", MAX_WORD);
+ }
+
+  return 0;
+error:
+  return -1;
+}
+
 int main(int argc, char *argv[]) {
- check(argc >= 2, "You need at least one parameter.");
+ 
+ int valid = validate_args(argc, argv);
+ if (valid != 0) {
+  printf("Validation failed.");
+  return -1;
+ }
 
  char dirpath[] = "/var/log/";
  
@@ -90,9 +120,9 @@ int main(int argc, char *argv[]) {
  while(*fname) {
    fp = fopen(*fname, "r");
    check(fp != NULL, "Could not open %s.", *fname);
-   int found;
-   if(!strcmp(argv[1], "-o")) {
-    check(argv[2], "You need at least one parameter after -o flag.");
+   
+   int found = 0;
+   if(is_or(argv[1])) {
     printf("\nChecking %s ...", *fname);
     found = find_args_or(fp, argc, argv);
    } else {
