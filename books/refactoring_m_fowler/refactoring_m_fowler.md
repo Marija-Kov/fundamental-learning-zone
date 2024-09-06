@@ -138,22 +138,42 @@ Changing data vs changing functions;
 
 - Prefer using a class instead of an object, it opens more possibilities.
 
-## Combine functions into class or transform
+### Combine functions into class or transform
 
 - Prefer using former over the latter for flexibility.
 
-## Encapsulate Collection
+### Encapsulate Collection
 
 Basically, it's better to access a collection (array etc) using a designated method and create copies within those methods to avoid accidental modification.
 
-## Replace primitive with object
+### Replace primitive with object
 
 - Whenever you need to do something other than printing with a primitive, turn it into a class.
 
-## Replace Temp With Query
+### Replace Temp With Query
 
 - A variable is suitable for this refactoring only if it's calculated once and just read afterwards. 
 
-## Extract Class
+### Extract Class
 
 - If a class contains methods that don't make sense without each other, extract them into a class.
+
+### Inline Class
+
+- If two classes' methods look redundant in comparison, condense them into one.
+
+### Hide Delegate / Remove Middle Man
+
+- If an accessor gets redundant (```someField.accessor.theThingYouNeed```), hide it inside a delegating method. If you end up with too many little delegating methods that don't get used that often, get rid of them.
+
+### Substitute Algorithm 
+
+- Before introducing some change to some function, it might be a good idea to encapsulate logic that belongs together into something simpler. 
+
+### Move Field
+
+- When pieces of data are always passed to a function together or change together, they belong in a single record/class/object.
+
+
+
+
