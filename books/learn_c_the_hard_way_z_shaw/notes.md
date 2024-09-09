@@ -657,4 +657,22 @@ CHARS = a b c
 
 - make -s flag silences all the echoes but executes teh recipes, -n flag only echoes recipes without executing them. 
 
+## Exercise 28 - 30
+
+Project structure (skeleton), using Makefiles, unit test frameworks and usage.
+
+## Exercise 31
+
+Common causes of undefined behaviour:
+
+- using something that doesn't exist (anymore);
+- writing to something beyond its allocated memory size;
+- incompatible type conversion;
+- type mismatch;
+- unspecified type;
+- declaring something more than once;
+- dividing by zero;
+- modification of a constant;
+
+
 
