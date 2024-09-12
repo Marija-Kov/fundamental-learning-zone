@@ -302,7 +302,7 @@ all of the three above do the same thing.
 
 - ```leak (pid)``` - log memory leaks in process (pid)
 
-- Creating struct on the stack so it can be memory-manages automatically when we use malloc, we're storing things on the heap. That requires manual memory management.
+- Creating struct on the stack so it can be memory-managed automatically when we use malloc, we're storing things on the heap. That requires manual memory management.
 
 - ex16 and ex16a return the same results although in ex16, the struct is stored on the heap and the memory is (de)allocated manually using libraries. In ex16a, the struct is created on the stack and released automatically.
 
@@ -423,8 +423,13 @@ typedef int *somefunc(int a, int b)  // defines somefunc as a function type that
 
 ```
     free(something);
-
-    something = NULL; // this causes error
+    // We may still have access to the value of something at this point,
+    // but it's not as guaranteed as before;
+    // by free()-ing memory we're enabling overwriting
+    // but not overwriting implicitly.
+    // If we don't want the content of freed memory
+    // to be accessed, we have to overwrite it manually.
+    something = NULL;
 ```
 ### Debug steps
 
