@@ -88,6 +88,38 @@ char *test_shift()
  return NULL;
 }
 
+char *test_list_join()
+{
+ static List *list1 = NULL;
+ static List *list2 = NULL;
+
+ list1 = List_create();
+ list2 = List_create();
+ 
+ char *t1 = "t1";
+ char *t2 = "t2";
+ char *t3 = "t3";
+ char *t4 = "t4";
+
+ List_push(list1, t1);
+ List_push(list1, t2);
+ List_push(list2, t3);
+ List_push(list2, t4);
+
+ printf("### Testing list_join....\n");
+ mu_assert(List_first(list1) == t1, "list1->first not as expected.");
+ mu_assert(List_last(list1) == t2, "list1->last not as expected.");
+ mu_assert(List_first(list2) == t3, "list2->first not as expected.");
+ mu_assert(List_last(list2) == t4, "list2->last not as expected.");
+
+ List *new_list = List_join(list1, list2);
+
+ mu_assert(List_last(new_list) == t4, "new_list->last not as expected.");
+ mu_assert(List_first(new_list) == t1, "new_list->first not as expected.");
+
+ return NULL;
+}
+
 char *all_tests()
 {
  mu_suite_start();
@@ -98,6 +130,7 @@ char *all_tests()
  mu_run_test(test_remove);
  mu_run_test(test_shift);
  mu_run_test(test_destroy);
+ mu_run_test(test_list_join);
 
  return NULL;
 }

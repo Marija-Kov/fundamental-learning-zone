@@ -30,6 +30,7 @@ void *List_pop(List *list);
 void List_unshift(List *list, void *value);
 void *List_shift(List *list);
 void *List_remove(List *list, ListNode *node);
+void *List_join(List *list1, List *list2);
 
 // L - list, F - first, N - next, C - current node
 #define LIST_FOREACH(L, F, N, C)\

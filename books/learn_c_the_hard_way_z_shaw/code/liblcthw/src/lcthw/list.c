@@ -125,10 +125,31 @@ void List_unshift(List *list, void *value)
 error:
  return; 
 }
-
+// void * return value means that a pointer to _some_ data will be returned
+// it's a catch-all pointer type
 void *List_shift(List *list)
 {
  ListNode *node = list->first;
  return node != NULL ? List_remove(list, node) : NULL;
 }
+
+//void List_split()
+//{
+ // do we split at n-th node or at node->value ?  
+//}
+
+// ideally, we'll be able to join any number of linked lists in the given order 
+void *List_join(List *list1, List *list2)
+{
+  if (list1 == NULL) return list2;
+  if (list2 == NULL) return list1;
+  list2->first->prev = list1->last;
+  list1->last->next = list2->first;
+  list1->last = list2->last;
+  list2->first = list1->first;
+  return list1;
+}
+
+
+
 
