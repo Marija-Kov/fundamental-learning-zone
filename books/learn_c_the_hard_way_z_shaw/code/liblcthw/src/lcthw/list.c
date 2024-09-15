@@ -147,6 +147,7 @@ void *List_join(List *list1, List *list2)
   list1->last->next = list2->first;
   list1->last = list2->last;
   list2->first = list1->first;
+  list1->count += list2->count;
   return list1;
 }
 

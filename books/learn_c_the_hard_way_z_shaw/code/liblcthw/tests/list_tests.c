@@ -112,10 +112,13 @@ char *test_list_join()
  mu_assert(List_first(list2) == t3, "list2->first not as expected.");
  mu_assert(List_last(list2) == t4, "list2->last not as expected.");
 
+ int joined_count = list1->count + list2->count;
+
  List *new_list = List_join(list1, list2);
 
  mu_assert(List_last(new_list) == t4, "new_list->last not as expected.");
  mu_assert(List_first(new_list) == t1, "new_list->first not as expected.");
+ mu_assert(new_list->count == joined_count, "new_list->count not as expected.");
 
  return NULL;
 }
