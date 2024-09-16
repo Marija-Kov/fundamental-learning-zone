@@ -151,6 +151,31 @@ void *List_join(List *list1, List *list2)
   return list1;
 }
 
+void *List_cross_join(List *list1, List *list2)
+{
+  if (list1 == NULL) return list2;
+  if (list2 == NULL) return list1;
+  int count = list1->count > list2->count ? list1->count : list2->count; 
+  int i = 0;
+  ListNode *cur1 = list1->first;
+  ListNode *cur2 = list2->first;
+  ListNode *temp = cur1->next;
+  for (i = 0; i < count; i++) {
+   cur1->next = cur2;
+   cur2->prev = cur1;
+   if (temp == NULL) break;
+   cur1 = temp;
+   temp = cur2->next;
+   cur2->next = cur1;
+   cur1->prev = cur2;
+   if (temp == NULL) break;
+   cur2 = temp;
+   temp = cur1->next;
+  }
+ if (list1->count < list2->count) list1->last = list2->last;
+ list1->count = list1->count += list2->count;
+ return list1;
+}
 
 
 
