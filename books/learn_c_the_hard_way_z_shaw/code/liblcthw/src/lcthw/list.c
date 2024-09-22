@@ -207,5 +207,46 @@ void *List_cross_join(List *list1, List *list2)
  return list1;
 }
 
+void *List_merge_sort(List *left, List *right)
+{
+ if (left == NULL) {
+  if (right == NULL) return NULL;
+  return right;
+ } else if (right == NULL) return left;
+
+ // When one list is empty and the other one isn't
+ if (right->count == 0) {
+  free(right);
+  return left;
+ } else if (left->count == 0) {
+  free(left);
+  return right;
+ }
+
+ List *result = List_create();
+ 
+ while (left->count != 0 && right->count != 0) {
+  if (atoi(left->first->value) <= atoi(right->first->value)) {
+   List_push(result, left->first->value);
+   List_shift(left);
+  } else {
+   List_push(result, right->first->value);
+   List_shift(right);
+  }
+ }
+ 
+ if (left->count != 0) {
+  result = List_join(result, left);
+ }
+ if (right->count != 0) {
+  result = List_join(result, right);
+ }
+ 
+ free(left);
+ free(right);
+
+ return result;
+}
+
 
 

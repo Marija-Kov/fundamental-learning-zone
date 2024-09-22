@@ -39,6 +39,7 @@ void *List_remove(List *list, ListNode *node);
 void *List_join(List *list1, List *list2);
 void *List_cross_join(List *list1, List *list2);
 void *List_split_half(List *list);
+void *List_merge_sort(List *left, List *right);
 
 // L - list, F - first, N - next, C - current node
 #define LIST_FOREACH(L, F, N, C)\

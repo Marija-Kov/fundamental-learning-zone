@@ -199,6 +199,70 @@ char *test_list_split_half()
  return NULL;
 }
 
+char *test_list_merge_sort()
+{
+ static List *left = NULL;
+ static List *right = NULL;
+ 
+ printf("### Testing list_merge_sort.... \n");
+ 
+ void *result1 = List_merge_sort(left, right);
+ mu_assert(result1 == NULL, "Merge sort with empty lists not as expected.");
+
+ // When one list is NULL and the other isn't:
+ left = List_create();
+ 
+ List *result2 = List_merge_sort(left, right);
+ mu_assert(result2 == left, "Merge sort with one empty list not as expected.");
+
+ free(result2);
+
+ char *t1 = "2";
+ char *t2 = "7";
+ char *t3 = "3";
+ char *t4 = "4";
+ char *t5 = "5";
+
+ // When one list is empty and the other isn't:  
+ left = List_create();
+ right = List_create();
+ 
+ List_push(right, t1);
+ List_push(right, t2);
+
+ List *result3 = List_merge_sort(left, right);
+ mu_assert(result3 == right, "Merge sort when one list is empty and the other isn't not as expected.");
+
+ free(result3);
+
+ // When both lists are non-null and non-empty:
+ left = List_create();
+ right = List_create();
+
+ List_push(left, t1);
+ List_push(left, t2);
+ List_push(right, t3);
+ List_push(right, t4);
+ List_push(right, t5);
+
+ mu_assert(List_first(left) == t1, "left->first not as expected.");
+ mu_assert(List_last(left) == t2, "left->last not as expected.");
+ mu_assert(List_first(right) == t3, "right->first not as expected.");
+ mu_assert(List_last(right) == t5, "right->last not as expected.");
+
+ List *result4 = List_merge_sort(left, right);
+ mu_assert(List_first(result4) == t1, "Head not as expected after merge sort.");
+ mu_assert(result4->first->next->value == t3, "2nd node not as expected after merge sort.");
+ mu_assert(result4->first->next->next->value == t4, "3rd node not as expected after merge sort.");
+ mu_assert(result4->first->next->next->next->value == t5, "2nd node not as expected after merge sort.");
+ mu_assert(result4->first->next->next->value == t4, "3rd node not as expected after merge sort.");
+ mu_assert(List_last(result4) == t2, "Tail not as expected after merge sort.");
+ 
+ free(result4);
+
+ return NULL;
+}
+
 char *all_tests()
 {
  mu_suite_start();
@@ -212,6 +276,7 @@ char *all_tests()
  mu_run_test(test_list_join);
  mu_run_test(test_list_cross_join);
  mu_run_test(test_list_split_half);
+ mu_run_test(test_list_merge_sort);
 
  return NULL;
 }
