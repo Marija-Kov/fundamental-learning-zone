@@ -1,5 +1,6 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
+#include <math.h>
 
 List *List_create()
 {
@@ -133,10 +134,39 @@ void *List_shift(List *list)
  return node != NULL ? List_remove(list, node) : NULL;
 }
 
-//void List_split()
-//{
- // do we split at n-th node or at node->value ?  
-//}
+ListHalved *List_create_pair()
+{
+ return calloc(2, sizeof(List));
+}
+
+void *List_split_half(List *list)
+{
+ if (list->count <= 1) return list;
+
+ List *left = List_create();
+ List *right = List_create();
+
+ int mid = floor(list->count / 2);
+
+ ListNode *cur = list->first;
+ 
+ for (int i = 0; i < list->count; i++) {
+   if (i < mid) { 
+     List_push(left, cur->value);
+   } else {
+     List_push(right, cur->value);
+   }
+   cur = cur->next; 
+ }
+
+ List_destroy(list);
+ 
+ ListHalved *result = List_create_pair();
+ result->left = left;
+ result->right = right; 
+
+ return result;
+}
 
 // ideally, we'll be able to join any number of linked lists in the given order 
 void *List_join(List *list1, List *list2)

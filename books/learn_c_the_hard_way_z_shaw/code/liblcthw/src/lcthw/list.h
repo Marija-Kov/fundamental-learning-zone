@@ -16,7 +16,13 @@ typedef struct List {
   ListNode *last;
 } List;
 
+typedef struct ListHalved {
+ List *left;
+ List *right;
+} ListHalved;
+
 List *List_create();
+ListHalved *List_create_pair();
 void List_destroy(List *list);
 void List_clear(List *list);
 void List_clear_destroy(List *list);
@@ -32,6 +38,7 @@ void *List_shift(List *list);
 void *List_remove(List *list, ListNode *node);
 void *List_join(List *list1, List *list2);
 void *List_cross_join(List *list1, List *list2);
+void *List_split_half(List *list);
 
 // L - list, F - first, N - next, C - current node
 #define LIST_FOREACH(L, F, N, C)\
