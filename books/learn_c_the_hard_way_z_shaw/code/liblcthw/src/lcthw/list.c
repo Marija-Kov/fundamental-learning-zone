@@ -7,9 +7,18 @@ List *List_create()
  return calloc(1, sizeof(List));
 }
 
+SplitList *Split_list_create(int count) {
+ SplitList *result = calloc(count + 1, sizeof(List));
+ result->lists_ptr = calloc(count, sizeof(List));
+ result->length = count;
+ return result;
+}
+
 void List_destroy(List *list)
 {
  // TODO: make sure that list isn't NULL
+ check(list != NULL,"List input cannot be NULL.");
+ 
  LIST_FOREACH(list, first, next, cur)
  {
   if (cur->prev) {
@@ -22,6 +31,8 @@ void List_destroy(List *list)
  // deallocate every single ListNode and the List itself
  free(list);
  list = NULL;
+error:
+ list = NULL; // any statement
 }
 
 void List_clear(List *list)
@@ -134,38 +145,36 @@ void *List_shift(List *list)
  return node != NULL ? List_remove(list, node) : NULL;
 }
 
-ListHalved *List_create_pair()
+// Splits doubly linked lists into single-node lists.
+//
+// [ list ] - a list to be split; 
+// [ result ] - struct:
+//  - List **lists_ptr: pointer to where pointers to split lists are stored, must not be NULL;
+//  - int length: number of split lists, must be equal to list->count;
+SplitList *List_split(List *list, SplitList *result)
 {
- return calloc(2, sizeof(List));
-}
+  if (result == NULL) {
+   printf("BAD INPUT: SplitList must not be NULL.\n");
+   return result;
+  };
+  if (list->count > result->length) {
+   printf("BAD INPUT: List and SplitList lengths must match.\n");
+   return result;
+  };
+  if (list->count == 0) return result;
 
-void *List_split_half(List *list)
-{
- if (list->count <= 1) return list;
+  ListNode *cur = list->first;
+  for (int i = 0; i < list->count; i++) {
+    // add an empty List ptr to a collection of List ptrs:
+    result->lists_ptr[i] = List_create();
+    // add a node to an empty list:
+    List_push(result->lists_ptr[i], cur->value);
+    cur = cur->next; 
+  }
+  free(cur);
+  List_destroy(list);
 
- List *left = List_create();
- List *right = List_create();
-
- int mid = floor(list->count / 2);
-
- ListNode *cur = list->first;
- 
- for (int i = 0; i < list->count; i++) {
-   if (i < mid) { 
-     List_push(left, cur->value);
-   } else {
-     List_push(right, cur->value);
-   }
-   cur = cur->next; 
- }
-
- List_destroy(list);
- 
- ListHalved *result = List_create_pair();
- result->left = left;
- result->right = right; 
-
- return result;
+  return result;
 }
 
 // ideally, we'll be able to join any number of linked lists in the given order 

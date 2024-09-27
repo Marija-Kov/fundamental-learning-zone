@@ -165,7 +165,7 @@ char *test_list_cross_join()
  return NULL;
 }
 
-char *test_list_split_half()
+char *test_List_split()
 {
  static List *list = NULL;
 
@@ -183,17 +183,36 @@ char *test_list_split_half()
  List_push(list, t4);
  List_push(list, t5);
 
- printf("### Testing list_split_half....\n");
+ printf("### Testing List_split....\n");
  mu_assert(List_first(list) == t1, "list->first not as expected.");
  mu_assert(List_last(list) == t5, "list->last not as expected.");
  
- ListHalved *result = List_create_pair();
- result = List_split_half(list);
- mu_assert(List_last(result->left) == t2, "Left half tail not as expected");
- mu_assert(List_first(result->right) == t3, "Right half head not as expected");
+ SplitList *result = NULL;
+
+ // When SplitList input is NULL:
+ result = List_split(list, result);
+ mu_assert(result == NULL, "Result not as expected when SplitList input is NULL.");
+
+ result = Split_list_create(list->count);
  
- List_destroy(result->left);
- List_destroy(result->right);
+ // When input values are incompatible:
+ list->count++;
+ List_split(list, result);
+ mu_assert(result->lists_ptr[0] == NULL, "Result after List_split with incompatible input values not as expected.");
+ 
+ // When all input is valid: 
+ list->count--;
+ List_split(list, result); 
+ mu_assert(result->lists_ptr[0]->first->value == t1, "1st List after List_split with all valid input not as expected.");
+ mu_assert(result->lists_ptr[0]->first->prev == NULL, "1st List->prev after List_split with all valid input should be NULL.");
+ mu_assert(result->lists_ptr[0]->first->prev == result->lists_ptr[0]->first->next, "1st List->first->prev and ->next after List_split with all valid input should both be NULL.");
+ mu_assert(result->lists_ptr[0]->first == result->lists_ptr[0]->last, "1st List->first and ->last after List_split with all valid input should be the same node.");
+ mu_assert(result->lists_ptr[1]->first->value == t2, "2nd List after List_split with all valid input not as expected.");
+ mu_assert(result->lists_ptr[2]->first->value == t3, "3rd List after List_split with all valid input not as expected.");
+ mu_assert(result->lists_ptr[3]->last->value == t4, "4th List after List_split with all valid input is NULL.");
+ mu_assert(result->lists_ptr[4]->first->value == t5, "Last list after List_split with all valid input not as expected.");
+ 
+ free(result->lists_ptr);
  free(result);
  
  return NULL;
@@ -275,7 +294,7 @@ char *all_tests()
  mu_run_test(test_destroy);
  mu_run_test(test_list_join);
  mu_run_test(test_list_cross_join);
- mu_run_test(test_list_split_half);
+ mu_run_test(test_List_split);
  mu_run_test(test_list_merge_sort);
 
  return NULL;
