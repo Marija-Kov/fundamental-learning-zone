@@ -679,5 +679,8 @@ Common causes of undefined behaviour:
 - dividing by zero;
 - modification of a constant;
 
+## Exercise 34
+
+- Read about Small String Optimization (SSO);
 
 
