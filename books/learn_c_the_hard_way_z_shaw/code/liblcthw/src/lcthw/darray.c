@@ -25,22 +25,20 @@ error:
 */
 int DArray_push(DArray * array, void *el)
 {
-  if (array->contents == NULL) {
-    printf("array->contents is NULL\n");
-    return array->end;
+  if (array == NULL) {
+    printf("Cannot push into NULL.\n");
+    return -1;
+  }
+  if (array->end >= array->max) {
+   DArray_expand(array);
   }
   array->contents[array->end] = malloc(sizeof(void *));
   check_mem(array->contents[array->end]);
   array->contents[array->end] = el;
   array->end++;
-  if (array->end >= array->max) {
-   // TODO: if the end index goes over max, expand the array
-   printf("The array size went over max\n");
-   return array->max;
-  }
  return 0;
 error:
- return array->end;
+ return -1;
 }
 
 void DArray_clear(DArray * array)
@@ -65,7 +63,15 @@ error:
 
 int DArray_expand(DArray * array)
 {
+ array->max = array->max + array->expand_rate;
+ // allocate more memory for the expanded array
+ void *new_contents = realloc(array->contents, array->max * sizeof(void *)); 
+ check_mem(new_contents); // make sure we don't lose access to contents..
+ array->contents = new_contents;
  
+ return 0;
+error:
+ return -1;
 }
 
 int DArray_contract(DArray * array)

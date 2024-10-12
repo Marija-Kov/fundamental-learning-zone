@@ -26,21 +26,29 @@ char *test_darray_push()
  typedef struct Test {
     void *test;
  } Test;
-
- DArray *array = DArray_create(sizeof(void *), 100);
+ int init_max = 2;
+ DArray *array = DArray_create(sizeof(void *), init_max);
  mu_assert(array != NULL, "DArray should have been created.");
  mu_assert(array->end == 0, "Array end index should be 0 at this point");
  mu_assert(array->contents[0] == NULL, "Contents of an empty array not as expected.");
  Test *el1 = malloc(sizeof(Test));
  Test *el2 = malloc(sizeof(Test));
+ 
+ mu_assert(DArray_push(NULL, el1) == -1, "Attempt to push into NULL not as expected.");
+ 
  DArray_push(array, el1);
  DArray_push(array, el2);
  mu_assert(array->end == 2, "Array end index not as expected after push.");
  mu_assert(array->contents[0] == el1, "Contents[0] not as expected.");
  mu_assert(array->contents[1] == el2, "Contents[1] not as expected.");
 
- free(array->contents[0]);
- free(array->contents[1]); 
+ // Trigger expansion..
+ mu_assert(array->max == init_max, "Initial max value not as expected.");
+ Test *el3 = malloc(sizeof(Test));
+ DArray_push(array, el3);
+ mu_assert(array->max == init_max + DEFAULT_EXPAND_RATE, "Array max not as expected after expansion.");
+
+ DArray_clear(array);
  free(array->contents);
  free(array);
 
@@ -126,6 +134,21 @@ char *test_darray_pop()
   return NULL;
 }
 
+char *test_darray_expand()
+{
+  printf("### Testing darray_expand....\n");
+  int init_max = 100;
+  DArray *array = DArray_create(sizeof(void *), init_max);
+  mu_assert(array->max == init_max, "Max not as expected.");
+
+  DArray_expand(array);
+  mu_assert(array->max == init_max + DEFAULT_EXPAND_RATE, "Array not expanded as expected.");
+
+  free(array);
+
+  return NULL;
+}
+
 char *all_tests() 
 {
  mu_suite_start();
@@ -134,6 +157,7 @@ char *all_tests()
  mu_run_test(test_darray_push);
  mu_run_test(test_darray_clear);
  mu_run_test(test_darray_pop);
+ mu_run_test(test_darray_expand);
 
  return NULL;
 }
