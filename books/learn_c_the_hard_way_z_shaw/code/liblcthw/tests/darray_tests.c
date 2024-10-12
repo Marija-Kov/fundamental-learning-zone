@@ -80,6 +80,52 @@ char *test_darray_clear()
  return NULL;
 }
 
+char *test_darray_pop()
+{
+  printf("### Testing darray_pop....\n");
+
+  typedef struct Test {
+     void *test;
+  } Test;
+
+  // NULL input..
+  void *result = DArray_pop(NULL);
+  mu_assert(result == NULL, "Output should be NULL with NULL input.");
+
+  DArray *array = DArray_create(sizeof(void *), 100);
+  mu_assert(array != NULL, "DArray should have been created.");
+  
+  // Empty array input..
+  result = DArray_pop(array);
+  mu_assert(result == array, "Input should have been returned if it's an empty array.");
+  
+  // Non-empty array nput..
+  Test *el1 = malloc(sizeof(Test));
+  Test *el2 = malloc(sizeof(Test)); 
+  DArray_push(array, el1);
+  DArray_push(array, el2);
+  mu_assert(array->end == 2, "Array end index not as expected after push.");
+  mu_assert(array->contents[0] == el1, "Contents[0] not as expected.");
+  mu_assert(array->contents[1] == el2, "Contents[1] not as expected.");
+  
+  result = DArray_pop(array);
+  mu_assert(array->end == 1, "Array end index not as expected after pop.");
+  mu_assert(result == el2, "Popped array element not as expected");
+  mu_assert(array->contents[array->end] == el2, "Popped array data not accessible from the array");
+  
+  Test *el3 = malloc(sizeof(Test));
+  DArray_push(array, el3);
+  mu_assert(array->contents[1] == el3, "Contents[1] not as expected after a push after a pop.");
+  mu_assert(array->end == 2, "Array end index not as expected after a push after a pop.");
+
+  free(result);
+  free(el1);
+  free(el3);
+  free(array);
+
+  return NULL;
+}
+
 char *all_tests() 
 {
  mu_suite_start();
@@ -87,6 +133,7 @@ char *all_tests()
  mu_run_test(test_darray_create);
  mu_run_test(test_darray_push);
  mu_run_test(test_darray_clear);
+ mu_run_test(test_darray_pop);
 
  return NULL;
 }

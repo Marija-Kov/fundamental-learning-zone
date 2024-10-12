@@ -27,7 +27,7 @@ int DArray_push(DArray * array, void *el)
 {
   if (array->contents == NULL) {
     printf("array->contents is NULL\n");
-    return array;
+    return array->end;
   }
   array->contents[array->end] = malloc(sizeof(void *));
   check_mem(array->contents[array->end]);
@@ -57,7 +57,6 @@ void DArray_clear(DArray * array)
      check_mem(array->contents[i]);
      free(array->contents[i]);
      array->contents[i] = NULL;
-     printf("success at index %d\n", i);
   }
   array->end = 0;
 error:
@@ -76,7 +75,22 @@ int DArray_contract(DArray * array)
 
 void *DArray_pop(DArray * array)
 {
- return array;
+  if (array == NULL || array->end < 1) {
+   printf("Nothing to pop here.\n");
+   return array;
+  };
+  void *result = array->contents[array->end - 1];
+  /* The problem with doing just this is that the popped element is still accessible in the array
+   but if it's freed and nullified, we won't be able to return it.
+  */
+  array->end--;
+  // TODO: contract the array if enough slots were left empty:
+  if (array->max - array->end - 1 == (int)array->expand_rate) {
+    printf("The array may be contracted.\n");
+  //   Darray_contract(array);
+  //   array->max = array->end - 1;
+  }
+    return result;
 }
 
 void DArray_destroy(DArray * array)
