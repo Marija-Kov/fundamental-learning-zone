@@ -95,12 +95,12 @@ char *test_darray_pop()
   typedef struct Test {
      void *test;
   } Test;
-
+  int init_max = 2;
   // NULL input..
   void *result = DArray_pop(NULL);
   mu_assert(result == NULL, "Output should be NULL with NULL input.");
 
-  DArray *array = DArray_create(sizeof(void *), 100);
+  DArray *array = DArray_create(sizeof(void *), init_max);
   mu_assert(array != NULL, "DArray should have been created.");
   
   // Empty array input..
@@ -119,12 +119,21 @@ char *test_darray_pop()
   result = DArray_pop(array);
   mu_assert(array->end == 1, "Array end index not as expected after pop.");
   mu_assert(result == el2, "Popped array element not as expected");
+  // ideally, this test should fail:
   mu_assert(array->contents[array->end] == el2, "Popped array data not accessible from the array");
   
+  // Check if the element pushed after pop is stored in the right slot..
   Test *el3 = malloc(sizeof(Test));
   DArray_push(array, el3);
   mu_assert(array->contents[1] == el3, "Contents[1] not as expected after a push after a pop.");
   mu_assert(array->end == 2, "Array end index not as expected after a push after a pop.");
+
+  // Check if the array contracts...
+  DArray_push(array, el1);
+  mu_assert(array->max == init_max + DEFAULT_EXPAND_RATE, "Array did not expand as expected.");
+  DArray_pop(array);
+  mu_assert(array->max == init_max, "Array did not contract as expected.");
+  mu_assert(array->max == array->end, "Max should be at the end index after contraction.");
 
   free(result);
   free(el1);
@@ -149,6 +158,31 @@ char *test_darray_expand()
   return NULL;
 }
 
+char *test_darray_contract()
+{
+ printf("### Testing darray_contract....\n");
+
+ int result = DArray_contract(NULL);
+ mu_assert(result == -1, "Result after an attempt to contract NULL not as expected.");
+ result = 0;
+ int init_max = 2;
+ DArray *array = DArray_create(sizeof(void *), init_max);
+ mu_assert(array->max == init_max, "Max not as expected.");
+ 
+ result = DArray_contract(array);
+ mu_assert(result == -1, "Result after an attempt to contract array whose max is less than its contract rate not as expected");
+ 
+ DArray_expand(array);
+ mu_assert(array->max == init_max + DEFAULT_EXPAND_RATE, "Array not expanded as expected.");
+ 
+ DArray_contract(array);
+ mu_assert(array->max == init_max, "Max not as expected after contraction.");
+
+ free(array);
+
+ return NULL;
+}
+
 char *all_tests() 
 {
  mu_suite_start();
@@ -158,6 +192,7 @@ char *all_tests()
  mu_run_test(test_darray_clear);
  mu_run_test(test_darray_pop);
  mu_run_test(test_darray_expand);
+ mu_run_test(test_darray_contract);
 
  return NULL;
 }

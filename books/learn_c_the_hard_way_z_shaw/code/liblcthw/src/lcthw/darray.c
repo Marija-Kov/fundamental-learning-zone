@@ -76,7 +76,19 @@ error:
 
 int DArray_contract(DArray * array)
 {
+ check(array != NULL, "Cannot contract NULL;");
+ check(array->max > (int)array->expand_rate, "Cannot contract, array too small.");
+ for (int i = 0; i < (int)array->expand_rate; i++) {
+  // We may want to check if the slot contains some data we might not want 
+  // to lose before releasing it.
+  if (array->contents[array->max]) {
+   free(array->contents[array->max]);
+  }
+  array->max--;
+ }
  return 0;
+error:
+ return -1;
 }
 
 void *DArray_pop(DArray * array)
@@ -90,11 +102,9 @@ void *DArray_pop(DArray * array)
    but if it's freed and nullified, we won't be able to return it.
   */
   array->end--;
-  // TODO: contract the array if enough slots were left empty:
-  if (array->max - array->end - 1 == (int)array->expand_rate) {
-    printf("The array may be contracted.\n");
-  //   Darray_contract(array);
-  //   array->max = array->end - 1;
+  if (array->max - array->end == (int)array->expand_rate) {
+    DArray_contract(array);
+    array->max = array->end;
   }
     return result;
 }
