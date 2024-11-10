@@ -683,4 +683,38 @@ Common causes of undefined behaviour:
 
 - Read about Small String Optimization (SSO);
 
+## Exercise 35
+
+### Radix sort
+
+- Read about number 256 in computing.
+
+Given that x is uint64_t *, and y a short with value range 0-7, here:
+```
+#define ByteOf(x, y) (((uint8_t *)x)[(y)])
+```
+we are casting x into uint8_t * to get access to individual byte at index y.
+
+    y:   [0]       [1]      [2]     [3]       [4]      [5]     [6]      [7]
+    x: 00010010 00100110 01110000 00000011 00010000 01110100 00010111 0000001
+
+So, to focus on the 4th byte in x, we would do: ByteOf(x, 3) i.e. ((uint8_t *)x)[(3)]
+
+#### Cumulative count in radix sort
+
+Example:
+
+byte value        0  1  2  3  4  5  6  7  8 
+--------------------------------------------
+occurrence count  3  0  1  2  0  1  0  0  0
+--------------------------------------------
+first appears
+in dest array     0  3  3  4  6  6  7  7  7
+at index
+--------------------------------------------
+
+- Read about the importance of stable sort (multi-level sorting, predictability..) as well as its performance implications.
+
+Radix sort is stable because it preserves the order of previous(ly sorted) byte values. 
+
 
