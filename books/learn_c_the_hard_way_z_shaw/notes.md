@@ -717,4 +717,8 @@ at index
 
 Radix sort is stable because it preserves the order of previous(ly sorted) byte values. 
 
+## Exercise 36
+
+External attackers can control strings and pointers when they can be determined by external input. C strings allow attackers to trigger undefined behaviour.
+
 
