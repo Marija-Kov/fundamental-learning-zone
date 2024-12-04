@@ -111,7 +111,20 @@ void *DArray_pop(DArray * array)
 
 void DArray_destroy(DArray * array)
 {
-
+  if (array == NULL) return;
+  if (array->contents == NULL) {
+    free(array);
+    return;
+  }
+  // We're assuming that the array has certain members defined by DArray
+  for (int i = 0; i < array->max; i++) {
+    if (array->contents[i]) {
+      // free(array->contents[i]); // TODO: it fails here with Abort trap 6 if SSO is triggered
+    }
+    continue;
+  }
+  free(array->contents);
+  free(array);
 }
 
 void DArray_clear_destroy(DArray * array)
