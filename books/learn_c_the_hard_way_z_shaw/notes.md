@@ -721,4 +721,15 @@ Radix sort is stable because it preserves the order of previous(ly sorted) byte 
 
 External attackers can control strings and pointers when they can be determined by external input. C strings allow attackers to trigger undefined behaviour.
 
+## Exercise 39
+
+### Boyer Moore Horspool string search algorithm 
+https://www.youtube.com/watch?v=PHXAOKQk2dw
+
+- The worst case scenario has the complexity of the brute force string search approach - `O(nm)` where `n` is the text and `m` is the pattern.
+
+- In the best case, the last char in the pattern never matches a char in the text - `O(n/m)`
+
+- How does someone come up with the idea of skip table?
+
 
