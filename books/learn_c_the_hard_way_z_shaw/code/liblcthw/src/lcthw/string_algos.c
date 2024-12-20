@@ -62,7 +62,7 @@ int String_find(bstring in, bstring what)
     const unsigned char *haystack = (const unsigned char *)bdata(in);
     ssize_t hlen = blength(in);
     const unsigned char *needle = (const unsigned char *)bdata(what);
-    ssize_t nlen = blength(what);
+    const ssize_t nlen = blength(what);
     size_t skip_chars[UCHAR_MAX +1] = { 0 };
 
     String_setup_skip_chars(skip_chars, needle, nlen);
